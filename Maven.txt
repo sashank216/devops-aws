@@ -1,0 +1,314 @@
+It is an Automation Project management tool developed by Apache software Foundation
+
+It is based on POM(Projet Object Model). (POM.xml) xml: extensible Markup Language.
+
+. POM is nothing but project Object Model.
+
+. xml is extensible markup language.
+
+. POM.xml files consists METDATA, DEPENDENCIES, KIND OF OUTPUT, KIND OF PROJECT, DESCRIPTION.
+
+. NOTE: One project contains only one workspace, each workspace consists of one POM.xml files.
+----------------------------------------------------------------------------------------------------------
+
+MAVEN is a build tools and manage dependencies
+
+Manage Dependencies:
+
+What us Build Tool:
+
+. It is used to set up everything which is required to run your java code This can be applied to your entire java project.
+
+. It generates source code, compiling code, package code to a jar etc.
+
+. POM refers the XML file that have all information regarding project and configuration details
+
+. Main configuration file is in pom.xml
+
+. It has description of the Project details regarding version and configuration management.
+
+. The XML file is in the Project home directory.
+
+. Maven can build any number of projects into desried Output such as .jar, .war and .ear
+
+ .jar = java archive file(if spring boot is present)
+ .war =  web archive file(if html css etc)
+ .EAR = enterprise archive( Java)
+
+
+. It is mostly used for java-based projects.
+. Maven is written in java.
+
+. Maven helps in getting the right jar file for each project as there may be different versions of separate packages
+
+. For downloading dependecies vists mvnrepository.com
+
+Dependencies: It refers to the java libraries that are needed for the project
+
+Repositories: Refers to the directories of Packged jar files.
+
+Build tools:
+
+C, C++ : make file
+.Net   : Visual studio
+Java   : Ant, Maven, Gradle
+
+
+Java Project Structure:
+. Source Code
+. Test Code
+. Project Structure(Asserts, Directories, Resources)
+. Dependencies/Library
+. Configuration
+. Task Runner
+. Reporting
+
+-------------------------------------------------------------------------------------------------------------------------
+
+Problems Withour Maven:
+
+. Adding set of jars in each project: In that case of Struts, Springs we need to add jar files in each project. It must include all the dependencies of jars also.
+
+. Creating the right project structure: We must create the right project structure in Servlet, Struts etc. Otherwise it will not be executed.
+
+
+. Building and Deploying the project: We must build and deploy the project, so it may work.
+
+
+
+MAVEN ARCHITECTURE:
+
+.M2                       POM.XML | GOALS           REMOTE/CENTRAL REP
+Local Repo             _____________________       
+                         
+                           SOURCE CODE
+
+                       ______________________
+                        
+                           WORK SPACE
+
+                      |
+                       GIT HUB
+
+----------------------------------------------------------------------------------------------------------------
+
+
+COMPONENTS:
+
+. LOCAL REPO: REFERS to the machine of the developer where all the project materials are saved
+
+. Remote Repo: Refers to the repository present on a web server which is used when maven needs to download dependencies
+
+
+. Central Repo: Refers to the maven community that comes into the action when there is a need of dependencies and those dependencies cannot be found in the Local repository
+
+
+. GOALS: It is nothing but a task
+
+------------------------------------------------------------------------------------------------------------------
+
+How it works:
+
+There are various components of maven architecture a local repo or the local machine that you work on . There is a central repo and then there is a remote repo or the remote web server.
+
+
+So, whenever you specify any dependency in the POM.xml file, Maven will look for it in the central repo first. If the dependency is present in the central repo it will copy the same onto your local machine.
+
+
+However, if that dependency is not present there, Maven will fetch it from the remote repo or remote web server using the internet. So, the internet is very much mandatory for using Maven.
+
+---------------------------------------------------------------------------------------------------------------------
+
+MAVEN BUILD LIFE CYCLE:
+
+1. Generate Resource ( DEPENDENCIES)
+2. Compile COde = mvn compile
+3. Unit Code = mvn test
+4. Package(build) = mvn package
+5. install(into local repo or Artifactory) = mvn install
+6. Deploy(to servers)
+7. Clean ( to delete all the runtime files) = mvn clean
+
+--------------------------------------------------------------------------------------------------
+
+.Build lifecyle consists of a sequence of build phases and each build  phase consists sequence of goals
+
+. Each goal is responsible for a particular task. Goals are nothing but commands
+
+. When a phase is run, all the goals related to that phase and its plugins are compiled.
+
+
+------------------------------------------------------------------------------------------------------
+
+MAVEN DIRECTORY STRUCTURE
+
+
+                  MY Project
+
+
+app. java             apptest.java                  POM.XML         
+main                   test
+_____________________________________
+
+            src
+
+
+
+
+MY project
+  
+src
+main
+test
+
+pom.xml
+
+
+-----------------------------------------------------------------------------------------------
+
+MAVEM COMMANDS
+
+sudo -i
+
+INSTALL JAVA - yum install java-1.8.0-openjdk -y
+java -version
+
+Install Maven - yum install maven -y
+mvn -v
+
+Internet download - wget tarfile
+
+unzip file: tar -zxvf filename
+
+cd filename
+
+mvn archetype:generate
+
+groupid: devops
+artifactid: aws
+:y
+
+cd aws
+cat pom.xml(default pom.xml)
+
+
+cd src/
+ll
+cd main/
+cd java/
+ll
+cd devops/
+ll
+cat App.java
+
+Compile the code
+
+go back to aws directory:
+
+mvn compile ( to compile the code)
+
+cd target/
+
+cd classes/
+
+cd devops/
+
+cat APP.java
+
+cd ../../../
+
+mvn test ( to test the code)
+
+cd ../../../
+
+mvn package ( to pack the dependecies and create the .jar file)
+
+
+cd ../../../
+
+mvn install
+
+mvn clean
+
+mvn clean package( end to end overwrite)
+
+------------------------------------------------------------------------------------------------
+
+
+
+Method 1: Install a Newer Version Manually (Recommended)
+Check Your Current Maven Version
+
+bash
+Copy code
+mvn -v
+Download the Latest Maven Version
+Visit the Apache Maven download page to get the latest version. You can download it directly using wget:
+
+bash
+Copy code
+wget https://dlcdn.apache.org/maven/maven-3/<latest-version>/binaries/apache-maven-<latest-version>-bin.tar.gz
+Replace <latest-version> with the desired version number, such as 3.9.5.
+
+Extract the Downloaded Archive
+
+bash
+Copy code
+tar -xvzf apache-maven-<latest-version>-bin.tar.gz
+Move Maven to /opt Directory
+
+bash
+Copy code
+sudo mv apache-maven-<latest-version> /opt/maven
+Set Up Environment Variables
+Add Maven to your system's PATH:
+
+bash
+Copy code
+sudo nano /etc/profile.d/maven.sh
+Add the following lines:
+
+bash
+Copy code
+export M2_HOME=/opt/maven
+export PATH=$M2_HOME/bin:$PATH
+Save the file and exit.
+
+Apply Changes
+Reload the environment variables:
+
+bash
+Copy code
+source /etc/profile.d/maven.sh
+Verify Maven Installation
+
+bash
+Copy code
+mvn -v
+Method 2: Use Yum to Update Maven
+Check Available Maven Versions
+Amazon Linux often provides older Maven versions via yum. To check:
+
+bash
+Copy code
+sudo yum list maven
+Install Maven via Yum
+
+bash
+Copy code
+sudo yum install maven
+Verify Maven Installation
+
+bash
+Copy code
+mvn -v
+Note: If yum doesn't provide the required Maven version, use Method 1 to install manually.
+
+Troubleshooting
+If Maven is still outdated after following Method 2, use Method 1 to ensure you have the latest version.
+Confirm the correct Maven path is in your environment by running:
+bash
+Copy code
+which mvn
+It should point to /opt/maven/bin/mvn or the location where you installed it.
+

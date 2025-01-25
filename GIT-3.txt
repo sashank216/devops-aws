@@ -1,0 +1,82 @@
+GIT-3
+
+How to Delete the commits:
+
+Two types of commit:
+
+SOFT commit: Only commit will get deleted( Data will not be deleted)
+HARD commit: Both commit and data will be deleted
+
+Ex:
+
+vim linux
+
+git add linux
+
+cat>linux (Hi Linux)
+
+git commit -m "linux is committing" linux
+
+cat>>linux ( linux is easy)
+
+git commit -m "linux is committing" linux
+
+cat>>linux ( linux is opensource)
+
+git commit -m "linux is committing" linux
+
+git log -3
+
+Delete the commit with Data(HARD): git reset --hard HEAD~1(the number of lines we would like to delete)
+
+Delete the commit with no Data(SOFT): git reset --soft HEAD~3(the number of lines we would like to delete)
+
+
+Atleast one commit will be present because of this procedure
+
+
+To delete all the commits at a time: git update-ref -d HEAD
+
+To know the no of commits deleted(HARD or SOFT): git reflog
+
+From the log copy the commit id then to restore the commit: git cherry-pick commitid
+
+To restore multiple commits: git cherry-pick commitid commitid2 
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+GIT BRANCH:
+
+
+BRANCHING Strategies: Using branches
+
+From v1 to copy of v1(changes of code ) to copy of v1 of copy v1 (changes to code) after succesfull changes of the code clone it to
+V1.
+
+Default Branch: Master/Main (runs in production)
+
+Three files are created (File1.java, file2.java, file3.java) -> 10k LOC
+
+Create a branch from the master --> Known as Staging branch(copy of master) master's files and commits will be present
+(file1.java, file2.java, file3.java) -> 10k LOC 100 commits
+
+As a devOps engineer create a branch from Staging branch: known as future branch
+
+file1.java file2.java file3.java -> 10k loc 100 commits
+
+create new files ( f1.py f2.py f3.py) 5k loc 200 commits
+
+
+Once new files are created in future branch , developers merge the
+ feature branch with staging branch then all the files with new files are merged
+
+The staging area will be sent to testing team -> Once approval we get from testing team then we merge the staging area with master branch
+
+Then all applications will be present and commits will be present in master -> the action is performed in production 
+
+
+If client asks for new feature -> we take code from staging area and create new feature branch and apply new features in it and commits
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+

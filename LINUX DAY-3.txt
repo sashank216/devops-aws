@@ -1,0 +1,148 @@
+LINUX DAY-3
+
+DIRECTORIES:
+
+Command to create folder: mkdir foldername
+To get into folder: cd(change directory)
+To know in which directory we are in: pwd
+
+/root/folder1/folder2/folder3/folder4
+
+To get back into root from folder: cd or cd-
+cd .
+cd ..
+cd ../../../ 
+To remove non empty folders: rm -rf folder1 
+To remove all the folders: rm -rf *
+To create folder in folder: mkdir folder1/folder2
+To know the list of folder1: ll folder1
+
+To create parenting directories:
+
+mkdir -p folder1/folder2/folder (-p parenting)
+
+To create txt file in folder 2:
+
+touch folder1/folder2/aws.txt
+
+To create a pdf in folder1
+touch folder1/devops.pdf
+-----------------------------------------------------------------------
+COPY COMMANDS:
+Create a file and write the content:  cat>file1
+Create a file: touch file2
+Copy the data of file from one source to destination of another file:
+
+cp source destination
+ex: cp file1 file2
+
+To copy data of the file which is exisiting to non existing file:
+cat>file3
+cp file3 file4(which is not created)
+
+To copy the data from one file to another without overwriting it:
+cat file5 >> file6
+
+------------------------------------------------------------------------
+MOVE COMMAND: mv source destination
+command: mv file1 file2
+We will use this command to rename this file as well
+
+----------------------------------------------------------------------
+
+EX: cp file1 folder1
+ex: mkdir folder1/folder2
+    cat>file1
+    mv file1 folder1/folder2
+------------------------------------------------------------------------------------------------------------------
+
+Task: 
+Case-1: Assume that there are 2 folders called folder1 and folder2
+        Folder 1 contains 5 files , I want to copy 5 files from folder1 to folder2
+
+answer: cp folder1/ * folder2
+
+Task:
+Case-2: Assume that there are 5 files and in that 5 files, one file has
+        data and remaining 4 files are empty now I want to copy the data from file1 to remaining 4 files
+        at a time.
+
+answer: cat file1.txt | tee file2.txt file3.txt file4.txt file5.txt
+
+Task:
+Case-3: Assume that there are 7 folders and 1 folder contains 5 files
+        I want to copy all the files which are present in folder1 to remaining
+        folders 
+
+answer: echo folder{2..7} | xargs -n 1 cp -v folder1/*
+----------------------------------------------------------------------
+To compare 2 files:
+
+cmp file1 file2
+
+To know the differenc b/w files:
+
+diff file1 file2
+
+Difference b/w cmp and diff: 
+
+cmp: In which line it is different and the bytes difference
+diff: The data difference  
+
+--------------------------------------------------------------------------------------------------------------------
+ANALYSIS ABOUT THE FILE:
+-rw-r--r--1 root root 41 sep 19 15:46 aws
+
+Types of Files:
+
+Regular file: -
+Directory files: d
+character files: c
+Blocked files: b
+
+
+Permissions of a file:
+
+r: read ----> 4
+w: write ---> 2
+
+x: executable permissions ----> 1
+-: no permission ----> 0
+
+user permissions: rw-   : 4 + 2 + 0 = 6
+group permissions: r--  : 4 + 0 + 0 = 4
+others permissions:r--  : 4 + 0 + 0 = 4
+
+
+overall file permissions: 644
+
+
+Example:
+-w-rw- --x = 2+4+2+1
+
+-w- : 0+2+0 =2
+rw-: 4+2+0 = 6
+--x: 0+0+1 = 1
+
+ACCESS CONTROL LIST:
+
+Here ACL should be 1 for the file
+ACL should be 2 for the folder
+
+Owners of a file(root root) 
+first root represents: user
+second root represents: group
+
+No of characters in a file (41):
+
+File creation details:
+
+Sep 19 15:46
+
+Filename: aws
+----------------------------------------------------------------------
+
+
+
+
+

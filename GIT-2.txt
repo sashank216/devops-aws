@@ -1,0 +1,111 @@
+GIT-2
+
+How to untrack the files:
+        |        
+How to send the files from staging area to working directory:
+
+git rm --cached filename
+
+To get Commit IDs Commit Msgs (Saving History of a file): git log --oneline
+
+To get the full commit ids: git log --pretty=oneline
+
+Top commit ids: git log -2(any number you wish)
+
+To know the file commits: git log --follow --all filename
+
+To know the data addition: git show commitid
+
+To know the data addition in numerical format: git show commitid  --stat 
+
+To config our name: git config user.name "Vishnu"---------------------------    Only to the present commits not to the previous commits
+
+To config our email: git config user.email "vishnusashank172@gmail.com" ----                   
+
+
+In other form instead of command
+
+cd .git/
+vim config
+[change user and email]
+
+------------------------------------------------------------------------------------
+
+If already a file is in tracked position simpily by placing the file in gitignore we cannot untrack the files
+
+To perform the action then first we have to untrack the tracked files by using the command: git rm --cached filename
+
+Then push the desired filed in the gitignore and then untrack them selectively
+
+To untrack the files selectively
+
+ex:
+
+git init.
+touch aws{1.5}.txt
+touch aws{1..5}.pdf
+touch aws{1..5}.jpg
+
+touch .gitignore
+
+vim .gitignore
+
+aws3.pdf  ((*.pdf)-for every file in pdf))
+aws1.txt  ((*.txt)-for every file in txt))
+aws5.jpg  ((*.jpg)-for every file in jpg))
+
+git add *
+
+
+To forcefully track the files in the ignore: git add -f *
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+To change the commit msg and author (that to only for the latest commit)
+
+git log -1
+
+git commit --amend -m " I am a devops engineer"
+
+To change the author :
+
+git commit --amend --author "Rajeshwar <rajeshwar@gmail.com>"
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+To commit the forgotten file to be par with the committed file:
+
+touch file{1..5}
+
+git status
+
+git add *
+
+git commit -m "all  files are commited" file{1..4}
+
+git commit --amend --no-edit( To add the staging area files to the present files)
+
+git log -1 --stat
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

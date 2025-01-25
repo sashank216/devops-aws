@@ -1,0 +1,175 @@
+LINUX DAY-1
+
+Linux - It is a free and open-source os with high security. Linux is multi user based OS
+
+Operating System:
+
+An OS is a software that acts as an interface b/w computer hardware components and the user.
+
+Every computer system must have at least one os to run other programs
+Applications like browsers, MS office , notepad games etc,need some environment to run and perform
+its tasks
+
+The os helps you to communicate with the computer without knowing how
+to speak the computer's language, it is not possible
+
+Types:
+
+Kernel:    Manages the hardware components, cpu, memory, and peripheral devices.
+           The kernel is the lowest level of the os
+
+Daemons:   Manages background services(printing sound, scheduling, etc) that either 
+           start up during boot or after you log into desktop
+
+Shell:     It is an environment in which we can run our commands, programs and shell
+           scripts. It gathers input from you and executes programs based on that input.
+           When a program finishes executing, it displays that program's output.
+
+
+Linux OS Distributions
+
+Many of the users taken the linux OS modified according to their requirements and releases
+into the market with different names called Linux distribution.
+
+.RedHat---
+.Ubuntu---
+.Debian
+.Centos---
+.Fedora
+.Opensuse
+.Kali Linux - mainly used by ethical hackers and cyberscurity
+.Amazon Linux---
+.Rocky Linux
+
+------------------------------------------------------------------------------------------------------------
+
+Architecture
+
+
+--Applications(code)
+     |
+--Shell(to run the code or application)
+     |
+--Kernel(inside shell there is Kernel)
+     |
+--Hardware(Inside Kernel haardware components are present)------------> . Terminals  .Printers . Discs
+     |
+     |
+     |
+--Utilities
+
+
+----------------------------------------------------------------------------
+Shell:
+
+. A shell is a program that serves as an interface b/w the user and the
+  OS. It provides a way for users to interact with the computer by accepting commands and then 
+  executing them.
+
+. Shells to be graphical(GUI-based), where users interact with the computer
+  though windows , icons, buttons, or they can be command-line-based, where
+  users type text commands into a terminal
+
+  CLI : Command line interface (only text based)
+  GUI: Graphical user interface(icons buttons etc)
+
+--------------------------------------------------------------------------------------
+
+Linux Types of Commands
+
+. System commands
+. Hardware commands
+. Network commands
+. File commands
+. Search commands
+. User commands
+. Permission commands
+
+.Whenever you connect with instance , we login as ec2-user,
+ EC2-user is the default user in amazon-linux
+But we have to login as root user
+
+Because Root user is the ultimate king of the linux
+to login from ec2-user to root user
+
+commands:
+sudo -i (or) sudo su -
+sudo = super user do
+
+To logout from root user
+command: exit
+
+
+System Commands:
+
+To know the os of the system: uname
+To know the kernel version of the os: uname -r
+To know the full info of the system: uname -a
+To know the spending time and running state and the load average on the system: uptime
+To know only time: uptime -p
+To know about date and time of our system run time: uptime -s
+To clear the screen: ctrl+L
+To know the private dns name of the server: hostname
+To get the ipaddress: hostname -i
+To get the ip address: ip addr , ip route, if config
+
+______________________________________ 
+Note: ip config( for windows system)  |
+For public address no command         |
+(because we know the public ip addr)  |
+_____________________________________ |
+
+In real time: user@projectdetails/env details/client details
+
+To change the hostname: hostnamectl set-hostname ust-swiggy-dev
+
+logout and login
+exit
+sudo -i
+
+To know the date: date
+To know only the date: date +"%d"
+To know the month: date +"%m"
+To know the year: date +"%y"
+To know the time(hours): date +"%H"
+To know the time(minutes): date +"%M"
+To know the time(seconds): date +"%S"
+To know the whole format: date +"%D"
+To change the whole format: date +"%F"
+To know the day: date +"%A"
+To know the month: date +"%B"
+To know which user we are logged in: whoami
+To know the user's login and other details: who
+To know the timezone of our system: timedatectl
+To change the time in the system: timedatectl set-timezone Asia/Kolkata
+
+
+----------------------------------------------------------------------------------------
+
+Hardware commands:
+
+cpu information: cat /proc/cpuinfo
+cat ---> It is a linux command which isused to read the data in a file
+proc ---> it is a directory which contains processor of our system
+cpuinfo ----> it is a file which contains cpu info
+
+Alternative: lscpu
+
+
+To know the ram information: cat /proc/meminfo
+
+To get RAM info in KB: free
+
+To convert data into MB: free -m
+
+To get storage info about our system: df -h
+ 
+To get list volumes attched to our system: fdisk -l
+
+
+
+
+
+
+
+

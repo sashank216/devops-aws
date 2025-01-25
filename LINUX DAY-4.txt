@@ -1,0 +1,148 @@
+LINUX CLASS-4
+
+VIM EDITOR:
+
+It is used to modify the data in a file it has 3 modes
+
+1. Command mode
+2. Insert mode
+3  Save and quit mode
+
+
+1. Command Mode: This is used to perform some actions like
+                 copy the data, delete the data and undo,redo and
+                 also we can move to particular line.
+
+   gg: used to go to starting line
+
+   G: last line
+
+   5gg: used to go to 5th line of a file
+ 
+   multiple lines: 19 We can move to 19th line of a file
+
+   :set number ---> To set number for the file
+
+   yy: copy a line
+
+   3yy: used to copy 3 lines from our cursor
+
+   p: print
+
+   5p: used to paste 5 lines
+
+   dd: It is used to delete the entire line
+
+   5dd: used to delete the 5 lines
+
+   u: used for undo
+
+   ctrl + r : used for redo
+
+   /word: used to search for a word
+
+   ?word: used to search for a word in a file
+
+   :%s/oldword/new-word/: used to replace a single occurance in aline
+
+   ex: my name is Vishnu, Vishnu is a devops engineer, vishnu is from hyd
+
+   :%s/vishnu/flm/
+
+ if we use this command the o/p: my name is flm, vishnu is a devops
+engineer, vishnu is from hyd
+
+  :%s/vishnu/flm/g
+
+if we use this command the o/p: my name is flm, flm is a devops enginner flm is from hyd because I used g(global)
+
+
+----------------------------------------------------------------------
+
+Insert Mode
+
+It is used to insert the data
+
+By default we are in command mode, if you wish to go to command mode
+insert mode you can use small i (i)
+
+To go back to command mode: esc
+
+A : Used to go to end of the line
+
+I: used to go to he starting of the line
+
+O: used to create a new line(up)
+
+o: used to create a new line(down)
+
+
+diff b/w insert and command mode: I command mode we stay in command mode and insert mode we go from command mode to insert mode
+
+----------------------------------------------------------------------
+Save and Quit mode: This mode is save the data and quit from vim editor
+
+:w: used to save the data in a file
+:q: used to quit fro vim editor
+:wq: save and quit the editor
+:q!: quit the editor forcefully
+:wq!: used to save and quit forcefully
+
+----------------------------------------------------------------------
+
+To compare the files
+
+vim -o file1 file2: used to view 2 files(one by one view)
+
+vim -O file1 file2: used to view 2 files(side by side)
+
+to encrypt the data: gpg -c aws
+
+to decrypt the data: gpg -d aws.gpg
+
+----------------------------------------------------------------------
+
+Delete entire the command : ctrl+u
+
+ctrl+a : starting of the command
+
+ctrl+e : ending of the command
+
+history of the commands: history
+
+To perform previous command through history: !206(number of the command)
+
+ctrl+k : data cut until the cursor
+
+ctrl+w : one word gets deleted
+
+----------------------------------------------------------------------
+
+Funny commands
+
+Ex: Train
+
+amazon-linux-extras install epel -y
+
+yum install sl -y
+
+sl
+
+
+ex: cow
+
+yum install cowsay -y
+
+cowsay hai-vishnu
+
+
+yum install figlet -y
+
+figlet hello vishnu
+
+
+yum install banner -y
+banner vishnu
+
+ 
+

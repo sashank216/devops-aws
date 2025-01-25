@@ -1,0 +1,167 @@
+
+MONOLITHIC:
+
+If an application contains N number of services(Let's take Paytm has Money Transactions, Movie Tickets, Train tickets, etc..) if all these services are included in one server then it will be called Monolithic Architecture. Every monolithic Architecture has only one database for all the services
+
+
+MICRO SERVICE:
+
+If an application contains N number of services(Let's take Paytm has Money Transactions, Movie Tickets, Train tickets, etc..) if every service has its own individual servers then it is called microservices. Every microservice architecture has its own database for each service
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+WHY DOCKER:
+
+Let us assume that we are developing an application, and every application has front end, backend and Database.
+
+
+EX:
+                           PAYTM
+
+
+FRONTEND                    BACKEND               DATABASE
+
+REACT JS
+
+BANK: 1.1V                  BANK:1.1              BANK: 1.1
+
+MOVIE: 1.2V                 MOVIE: 1.2V
+
+
+To resolve this problem: Virtual Machine
+
+VM: Installing a system in our main system
+
+TO RUN AN APPLICATION IN OUR SYSTEM OS IS NEEDED 
+WITHOUT OS NO APPLICATION CAN BE OPERATED
+
+EX: 
+
+
+             MY SYSTEM: WINDOWS, 8GB RAM & 1 TB HDD
+
+
+     VM-1 --> MOVIE                  VM-2 --> BANK             
+     OS: LINUX                       OS: WINDOWS 
+     RAM: 2 GB RAM                   RAM: 4 GB RAM 
+     MEMORY: 100 GB                  MEMORY: 150GB
+
+     REACT-1.1                       REACT-1.2
+     JAVA-1.1                        JAVA -1.2
+     MONGO DB -1.1                   MONGO DB-1.2
+
+     
+When no of vms increase = Resources and performance get decreased
+
+To overcome: DOCKER is used
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+CONTAINERIZATION:
+
+. It is used to pack the application along with its dependencies to run the application
+
+
+CONTAINER:
+
+. Container is nothing but, it is virtual machines does not have any OS
+
+. Docker is used to create these containers
+
+
+CONTAINER 1                  CONTAINER 2
+   |                             |
+  APP 1                        APP 2
+  BINS/LIBS                    BINS/LIBS
+  
+              DOCKER ENGINE
+              HOST OS
+
+
+           DOCKER ARCHITECTURE
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+When docker is installed on the server, the docker creates containers
+
+Containers also work as VM
+
+The difference between conatiners and vms is there is no os for containter, there is an os for vms
+
+CONTAINER IS LIKE VIRTUAL MACHINE WHICH DOES NOT HAVE OPERATING SYSTEM
+
+When an application has a bug in it and the container has the application in it, there is no need to stop the entire server , stopping the container which has application with the bug is enouh so through this procedure other appliations run smoothly and efficiently without any interruptions
+
+
+It is Micro Service
+
+CONTAINERS RUN THE APPLICATIONS THROUGH IMAGES:
+
+APPLICATION-->IMAGE-->CONTAINER
+
+
+BEFORE DOCKER:
+
+DEVELOPER ---> JENKINS (AFTER BUILD+TEST = WAR FILE IS CREATED) - WAR -> DEV (. JAVA . TOMCAT . MYSQL) -> TEST (. JAVA . TOMCAT . MYSQL) -> PROD (. JAVA . TOMCAT . MYSQL)
+
+
+AFTER DOCKER:
+
+DEVELOPER ---> JENKINS (AFTER BUILD+TEST = WAR FILE IS CREATED) - IMAGE -> DEV -> TEST -> PROD
+
+PACK ALL THE DEPENDENCIES WHICH ARE USEFUL FOR THE APPLICATION[IMAGE = WAR + JAVA + TOMCAT + MYSQL] = CONTAINERIZATION
+
+IMAGE WORKS AS ON OS FOR THE CONTAINER
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+DOCKER
+
+. It is an open source centralized platform designed to reate, deploy and run applications.
+
+. Docker is written in the Go language.
+
+. Docker uses containers on host O.S to run applications. It allows applications to use the same Linux kernel as a system on the host computer, rather than creating a whole virtual O.S
+
+. We can install Docker on any O.S but the docker engine runs natively on LINUX distribution
+
+. Docker performs O.S level Virtualization also known as COntainerization.
+
+. Before Docker many users face problems that a particular code is running in the developer's system but not in the user system
+
+. It was initially released in Match 2013, and developed by Solomon Hykes and Sebastin Pahl.
+
+. Docker is a set of platform-as-a-service that use O.S level Virtualization, where as VM ware uses Hardware level Virtualization.
+
+. Container has O.S files but its negligible in size compared to original files of that O.S
+
+
+ARCHITECTURE:
+
+                 DOCKER COMPONENTS
+
+
+   Client                   Docker Host                    Registry
+
+   docker build             Docker daemon                  NGINX etc
+                            Containers    Images
+   docker pull
+
+   docker run
+
+
+Client: The place where docker commands are performed
+
+Docker Host: The system where docker is installed
+
+Docker daemon: The services which are performed in the background
+
+Docker daemon consists of 4 components:
+
+. Containers
+. Images
+. Volumes
+. Networks
+
+Registry : Docker -> DockerHub(Git -> GitHub)
+
+DOCKER: IMAGES
+DOCKER HUB: STORE AND SHARE
+
+

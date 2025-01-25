@@ -1,0 +1,50 @@
+GITHUB:
+
+GITHUB is a centralized web based platform which is used to store and share the source code
+
+How to push files to GITHUB:
+
+ . Commit some files in local
+ 
+ . Now link github repo to local system : git remote add origin    github- url
+
+ -> Now push the source code to github:
+
+    Then it will ask username: provide github username
+    Now it will ask password: generate a token and paste here
+
+ -> How to generate token: settings >>>>>> developer settings >>>> personal access token >>>> generate a token >>>> name: developer settings >>>> personal access token >> geenrate a token >>> name:>>>> scoper : repositories
+
+ . git push -u origin master 
+
+ . to push multiple branches at a time: git push -u origin branch1 branch2 branch3
+ 
+ . (to push all branches: git push -u origin --all)
+
+ .  username:
+
+ .  password:         (token)(It will not be visible)
+
+ with token we can either push or clone
+
+ .To know what are the repo that we connected to github: git remote -v 
+
+ . To pull the commits from the central(GITHUB):  git pull origin master(branch name)
+
+(Alternative way: Git pull = fetch + merge)
+(fetch: checks whether there are changes in central)
+( if changes are present then we will merge to local)
+( Merge: Getting the changes from github)
+
+. git fetch origin master(branch name)
+
+. git merge origin/master(branch name)
+
+
+CREATE A PRIVATE REPO IN GITHUB
+
+PUSH 5 BRANCHES FROM LOCAL
+CREATE 2 NEW BRANCHES IN GITHUB
+UPLOAD SOME LOCAL FILES FROM YOUR PC
+CREATE SOME FILES AND FOLDERS IN GITHUB REPO DIRECTLY
+
