@@ -1,0 +1,137 @@
+Jenkins-1
+
+Continuous Integration:
+
+It is the combination of continuous build and continuous test
+
+Continuous Integration = Continuous Build + Continuous Test
+
+
+Before CI:
+
+Dev-1   |
+
+Dev-2   | ---->Github---->Server(Build)---->Another Server(Test)----->Success(Deploy)--->Fail(Ticket Raise to developer
+
+Dev-3   |
+
+Dev-4   |
+
+
+After CI:
+
+Dev-1   |
+
+Dev-2   | ---->Github----> CI Server
+
+Dev-3   |
+
+Dev-4   |
+
+
+CI Server: Here Build, Test & Deploy all these activities are performed in a single CI server
+
+
+CI:
+
+Whenever a developer commits the code using source code management like GIT, then the CI pipelines gets the changes of the code runs automatically build and unit test.
+
+. Due to integrating the new code with old code, we can easily get to know the code is a success or failure.
+
+. It finds the errors more quickly
+
+. Delivery the products to client more frequently
+
+. Developers don't need to manual tasks
+
+. Reduces the devlopers time 20% to 30%
+
+
+Continuous Delivery/Deployment:
+
+Continuous Delivery: Available for deployment. Anytime a new build artifact is available, the artifact is automatically placed in the desired env and deployed.
+
+Continuous Deployment: It is when you commit your code then it gets automatically tested , build and eploy on the production server
+
+
+
+Build-->Test-->Deploy to staging-->Acceptance Tests-->Deploy to production(Manual)-->Smoke Tests
+
+                Continuous Delivery
+
+
+Build-->Test-->Deploy to Staging-->Acceptance Tests-->Deploy to production(Automatic)-->Smoke Tests
+        
+             
+                Continuous Deployment
+
+-----------------------------------------------------------------------------------------------------------
+
+CI/CD PIPELINE:
+
+  Version Control-->Build-->Unit Test(Only Code level application test) -->Deploy(Pre production (dev env, uat env, staging env))-->Auto Test(Performance Testing etc)-->Deploy To production(Meauser Validate)
+
+
+-----------------------------------------------------------------------------------------------------------
+
+JENKINS:
+
+Jenkins is an open source project written in java it runs on the window,linux and Mac OS and it is platform independent
+
+First choice for CI and it is community-supported
+
+. Consists of Plugins
+. Automates the entire sldc
+
+It can run on any major platform without compatibility issues
+
+.Whenever developers wrie code, we integrate all the code of all developers at any point in time and we build, test and deliver/deploy it to the client. This is called CI/CD 
+
+
+Advantages:
+
+. Jenkins follows Master-Slave Architecture.
+. You can write your own plugin, can use the community plugin also.
+. Can understand the process of what is going on.
+
+
+   Jenkins Master --assigns the jobs--> Jenkins Slaves
+
+.Jenkins master is going to assign a job to the slave
+.If slaves are not available jenkins itsel does the job
+.By using the labels we can specify the jobs to the nodes
+
+Alternatives:
+
+Bamboo
+GitLAb
+Buddy
+-----------------------------------------------------------------------------------------------
+
+Jenkins Setup:
+
+JENKINS CLASS-1 (JENKINS SETUP)
+STEP-1: LAUCN AN EC2 INSTANCE WITH SEPARATE SECURITY GROUP
+STEP-2: GO TO JENKINS.IO AND COPY PASTE THOSE 2 LINKS
+STEP-3: INSTALL JAVA
+STEP-4: INSTALL JENKINS
+STEP-5: START THE JENKINS
+
+links-1: sudo wget -O /etc/yum.repos.d/jenkins.repohttps://pkg.jenkins.io/redhat-stable/jenkins.repo
+
+link-2 :sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+To install java11 : yum install java-17-amazon-corretto -y
+
+To install jenkins : yum install jenkins -y
+
+To start jenkins : systemctl start jenkins
+
+To check jenkins status : systemctl status jenkins
+
+To stop jenkins : systemctl stop jenkins
+
+
+
+
+
