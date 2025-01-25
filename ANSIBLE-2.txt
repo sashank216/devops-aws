@@ -1,0 +1,124 @@
+ANSIBLE-2
+
+. ANSIBLE does not track dependencies, so first ANSIBLE can be installed then the dependency python-pip can be installed
+
+
+PLAYBOOKS:
+
+.Playbooks in ansible are written in YAML language.
+
+.It is human readable & serialization language commonly used for configuration files.
+
+.You can write codes consists of vars, tasks, handlers, files, templates and roles.
+
+.Each playbook is composed of one or more modules in a list
+
+.Playbooks are mainly divided into sections 
+
+TARGET SECTION: Defines host against which playbooks task has to be executed ( Where user is going to perform actions)
+
+VARIABLE SECTION:Defines variables. ( User passes varibales)
+
+TASK SECTION: action you are performing. ( User can declare the tasks that we are doing in slave servers)
+
+EX: TOOLS INSTALL, UNINSTALL, UPDATE, RESTART, FILES CREATE ETC..
+
+---------------------------------------------------------------------------------------------------------------
+
+
+PLAYBOOK: Only in ANSIBLE USER
+
+ANSIBLE STATES
+
+INSTALL: PRESENT
+UNINSTALL: ABSENT
+UPDATE: LATEST
+START: STARTED
+RESTART: RESTARTED
+STOP: STOPPED
+
+->ansible@ipaddr] vim one.yml
+
+---
+- hosts: dev
+  user:  ansible
+  become: yes [without using sudo]
+  connection: ssh
+
+  tasks:
+    - name: Installing git in dev group
+      action: yum name=git state=present
+
+->ansible@ipaddr] ansible-playbook one.yml
+----------------------------------------------------------------------
+->ansible@ipaddr] vim two.yml
+
+---
+- hosts: all
+  user: ansible
+  become: yes
+  connection: ssh
+
+  tasks:
+   - name: Installing java
+     action: yum name=java-1.8.0-openjdk state=present
+
+->ansible@ipaddr] ansible-playbook two.yml
+
+----------------------------------------------------------------------
+
+HW: INSTALL JAVA11 and MAVEN in single playbook
+----------------------------------------------------------------------
+
+WEBSERVER: 
+
+APACHE
+NGINX
+IIS
+
+To install webserver:
+
+yum install httpd -y
+systemctl start httpd
+
+To deploy application:
+
+cd /var/www/html/
+
+vim index.html
+<h1> This is my web application </h2>
+
+REAL WORLD:
+
+Take the url link
+perform git clone
+
+go the folder
+
+cp * /var/www/html/ (copy the path)
+
+----------------------------------------------------------------------
+
+DEPLOY THE APPLICATION (webserver)
+
+
+su - ansible
+vim webserver.yml
+
+
+---
+- hosts: all
+  user: ansible
+  become: yes
+  connection: ssh
+
+  tasks:
+   - name: install web server in all slaves
+     action: yum name=httpd state=present
+
+   - name: Start the webserver
+     service: name=httpd state=started
+
+ansible-playbook webserver.yml
+
+----------------------------------------------------------------------

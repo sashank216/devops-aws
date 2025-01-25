@@ -1,0 +1,382 @@
+
+ANSIBLE-5
+
+vim python.yml
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks:
+    - name: Install python-pip
+      action: yum name=python-pip  state=present
+
+    - name: Installing python library using pip module
+      pip: name=NumPy
+--------------------------------------------------------------------------------------------------
+
+---------------------------------------------------------
+yum                                                      |
+action                                                   |
+command                                                  |
+pip                                                      |        
+raw: If any packages are unable to be installed by yum   |
+or command                                               |
+----------------------------------------------------------
+
+---
+- hosts: localhost
+  
+  tasks:
+    - name: Install vim-common
+      raw: yum -y install vim-common
+----------------------------------------------------------------------------------------------------
+
+GITHUB source code to another server
+
+
+
+vim git.yml
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks:
+     - name: Installing git
+       yum: name=git state=present
+
+     - name: getting code from github
+       git:
+        repo: "https://github.com/devops0014/swiggy.git"
+        dest: "/root/my-code"
+
+ansible-playbook git -y
+
+------------------------------------------------------------------------------------------------------------
+
+To declare branch: version
+
+vim git.yml
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks:
+     - name: Installing git
+       yum: name=git state=present
+
+     - name: getting code from github
+       git:
+        repo: "https://github.com/devops0014/swiggy.git"
+        dest: "/root/new-code"
+        version: feature
+
+ansible-playbook git -y
+
+
+------------------------------------------------------------------------------------------------------------
+
+To deploy private repo: generate a token exactly before https://___@(don't forget @)github.com
+
+
+vim git.yml
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks:
+     - name: Installing git
+       yum: name=git state=present
+
+     - name: getting code from github
+       git:
+        repo: "https://___token@___github.com/devops0014/MYPrivate-Repo.git"
+        dest: "/root/private-code"
+
+
+ansible-playbook git -y
+
+
+---------------------------------------------------------------------------------------------
+
+
+Ansible Set_Modules:
+
+ansible_os_family = type of OS
+
+ansible_kernel = Slave Server's Kernel Info
+
+ansible_processor_cores = cpu info
+
+ansible_architecture = 64 or 32 bit
+
+
+
+Debug module: To print the msg
+
+vim debug.yml
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks: 
+    - debug:
+        msg: "This is my playbook"
+
+
+ansible-playbook debug.yml -y
+
+------------------------------------------------------------------------------------------
+
+vim debug.yml
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks: 
+    - debug:
+        msg: "My slave server is working on {{ansible_os_family}}""
+
+
+ansible-playbook debug.yml -y
+
+
+---------------------------------------------------------------------------------------------------
+
+vim debug.yml
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks: 
+    - debug:
+        msg: "My slave server is working on {{ansible_meory_mb.real}}""
+
+
+ansible-playbook debug.yml -y
+
+---------------------------------------------------------------------------------------------
+
+
+vim debug.yml
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks: 
+    - debug:
+        msg: "My slave server is working on {{ansible_meory_mb.free}}""
+
+
+ansible-playbook debug.yml -y
+
+---------------------------------------------------------------------------------------------
+
+vim debug.yml
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks: 
+    - debug:
+        msg: "My slave server is working on {{ansible_meory_mb.total}}""
+
+
+ansible-playbook debug.yml -y
+
+---------------------------------------------------------------------------------------------
+
+useradd vishnu
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks: 
+    - name: print list of users
+      command: cat /etc/passwd 
+      register: abc
+      
+    - debug:
+        msg: "The list of users {{ abc.stdout }}"
+        
+-----------------------------------------------------------------------------------------
+
+git tool installed or not
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks: 
+    - name: print list of users
+      command: git --version
+      register: abc
+      
+    - debug:
+        msg: "The git version is {{ abc.stdout }}"
+
+ansible-playbook debug.yml
+
+-------------------------------------------------------------------------------------
+
+Roles:
+
+mkdir roles
+
+cd roles
+
+vim main.yml
+
+---
+- hosts: test
+  connection: ssh
+
+  roles:
+     - raju
+     - sravanth
+     - yaswanth
+
+
+mkdir raju sravanth yaswanth
+
+roles]cd raju
+
+mkdir tasks
+
+cd tasks
+
+main.yml
+
+- name: install web server
+  yum: name=httpd state=present
+
+- name: start webserver
+  service: name=httpd state=started
+
+cd ../../
+
+roles]cd sravanth
+
+mkdir tasks
+
+cd tasks
+
+main.yml
+
+- name: create a file
+  file:
+    path: "/var/www/html/index.html"
+    state: touch
+
+cd ../../
+
+roles]cd yaswanth
+
+mkdir tasks
+
+main.yml
+
+- name: insert
+  copy:
+    dest: "/var/www/html/index.html"
+    content: |
+       <h1> This is web-application </h1>
+
+
+cd ../../
+
+roles] yum install tree -y
+tree
+
+roles] ansible-playbook main.yml
+
+
+----------------------------------------------------------------------------------------
+
+
+Import others playbook
+
+[ansible galaxy]
+
+
+root]ansible-galaxy collection install janikvonrotz.ansible_build
+
+
+cd .ansible/
+
+ll
+
+cd collections/
+
+cd ansible_collection
+
+...
+
+cd jenkins
+cd tasks
+
+
+vim main.yml
+
+
+ansible-galaxy search elasitcsearch
+
+ansible-galaxy install ......
+
+----------------------------------------------------------------------------------------
+
+
+ansible vault:
+
+] cat git.yml
+
+
+ansible-vault encrypt git.yml
+passwd:
+
+cat git.yml
+
+ansible-vault decrypt git.yml
+
+to change the passwd: ansible-vault rekey git.yml
+
+
+ansible-vault create flm
+passwd
+
+hi flm
+this is data
+
+cat flm
+
+---------------------------------------------------------------------------------
+
+single command without playbook
+
+adhoc commands:
+
+
+quick action: 
+
+
+ansible group -m module -a ""
+
+ansible all -m command -a "uptime"
+
+ansible dev -a "free -m"
+
+ansible dev -a "git --version"
+
+ansible dev -a "touch mustafa"
+
+ansible dev -a "ls"
+

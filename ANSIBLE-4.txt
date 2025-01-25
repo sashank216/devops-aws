@@ -1,0 +1,420 @@
+ANSIBLE-4
+
+HANDLERS: To establish comunication between two tasks handlers is used
+
+vim handlers.yml
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks:
+    - name: Installing the web server
+      yum: name=httpd state=present
+      notify: restart webserver  
+
+  handlers:
+    - name: restart webserver
+      service: name=httpd state=started
+
+notify and the name in handlers should be same the execution will not be performed
+
+
+------------------------------------------------------------------------------------------
+
+Install Jenkins:
+
+vim jenkins.yml
+
+---
+- hosts: localhost
+  connection: ssh
+
+  tasks: 
+  - name:Installing Java dependency
+    yum: name:java-17-amazon-corretto state=present
+
+  - name: Download repo from jenkins.io
+    get_url:
+        url: https://pkg.jenkins.io/redhat-stable/jenkins.repo
+        dest: /etc/yum.repos.d/jenkins.repo
+
+  - name: Download key from jenkins.io
+    ansible.builtin.rpm_key:
+      key: https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+      state: present
+
+  - name: Install Jenkins
+    yum: name=jenkins state=present
+
+  - name: start the jenkins
+    service: name=jenkins state=started
+
+
+ansible-playbook jenkins.yml
+
+
+
+-----------------------------------------------------------------------------------------------------------
+
+Conditions: ansible_os_family == set up modules
+
+vim conditions.yml
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks:
+    - name: Install git
+      yum: name=git state=present
+      when: ansible_os_family == "RedHat"
+
+    - name: Install git
+      apt: name=git state=present
+      when: ansible_os_family == "Ubuntu"
+
+    - name: Install maven
+      yum: name=maven state=present
+      when: ansible_os_family == "CentOs"
+
+
+ansible-playbook conditions.yml
+
+
+-----------------------------------------------------------------------------------------------------------
+
+Files: To create a file
+
+vim file.yml
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks:
+   - name: I want to create a file
+     file:
+       path: "flm-ansible.pdf"
+       state: touch
+
+------------------------------------------------------------------------------------------------------------
+
+
+Folder: To create a folder
+
+vim folder.yml 
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks:
+   - name: To create a folder
+     file:
+        path: "flm-devops"
+        state: directory
+
+---------------------------------------------------------------------------------------------
+
+To create a file in already exisiting folder
+
+cd foldername
+
+pwd
+
+(copy the path)
+
+
+vim exist.yml
+
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks:
+   - name: To create a folder
+     file:
+        path: "/var/lib/foldername/vishnu.txt"
+        state: touch
+
+
+-------------------------------------------------------------------------------------------------
+
+To add the data in the file
+
+
+vim content.yml
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks:
+    - name: adding some content to the file
+      copy:
+       dest: flm-ansible.pdf
+       content: |
+         This is my playbook we are adding the data using ansible  
+         playbook
+
+
+ansible-playbook content.yml
+
+-------------------------------------------------------------------------------------------------
+
+Changing the permissions
+
+
+vim permissions.yml
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks:
+    - name: change permission of a file
+      file:
+       path: "mustafa"
+       state: touch
+       mode: 777
+
+-----------------------------------------------------------------------------------------------
+
+To change the user and group
+
+vim ug.yml
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks:
+    - name: adding user
+      user: name=tcs state=present
+    - name: adding group
+      group: name=infosys state=present
+    - name: change permission of a file
+      file:
+       path: "devops"
+       state: touch
+       mode: 777
+       owner: tcs
+       group: infosys
+
+
+To change the user: chown
+To change the group: chgrp
+
+ansible-playbook ug.yml
+
+--------------------------------------------------------------------------------------------------------------
+
+WRITE A PLAYBOOK TO deploy TOMCAT application
+
+
+vim app-server.yml 
+
+---
+- hosts: ops
+  connection: ssh
+
+  tasks:
+    - name: install java
+      yum: name=java-1.8.0-openjdk state=present
+
+    - name: download tomcat file
+      get_url:
+          url: "https://downloads.apache.org/tomcat/tomcat-9/v9.0.98/bin/apache-tomcat-9.0.98.tar.gz"
+          dest: "/root"
+
+    - name: untar the file
+      command: tar -zxvf  apache-tomcat-9.0.98.tar.gz
+
+    - name: rename the file
+      command: mv apache-tomcat-9.0.98 tomcat
+    
+    - name: start the tomcat
+      shell: nohup /root/tomcat/bin/startup.sh  (nohup executes shell with the help of shell module)
+
+
+       ccd..
+
+[NOTE: THROUGH ANSIBLE PLAYBOOK THE FILE IN SLAVE SERVER CANNOT BE MODIFIED]
+
+[SOLUTION: MODIFY IN OUR MASTER SERVER BY BRINGING FILE IN MASTER SERVER CHANGE THE CONFIGURATIONS AND MV TO SLAVE SERVER]
+
+
+
+.wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.98/bin/apache-tomcat-9.0.98.tar.gz
+
+.tar -zxvf apache-tomcat-9.0.98.tar.gz
+
+.cd webapps/manager/META-INF/
+
+.cp context.xml ~(HOME DIRECTORY)
+
+.cd ../../../
+
+. cd conf/
+
+. cp tomcat-users.xml ~
+
+. rm -rf apache-tomcat-9.0.98.tar.gz
+
+. vim context.xml
+
+:21 ( delete 2 lines)
+
+.vim tomcat-users.xml
+
+:roles
+3yy
+-->
+<role rolename="manager-gui"/>
+<role rolename="manager-script"/>
+<user username="tomcat" password="admin@123" roles="manager-script"/>
+</tomcat-users>
+
+
+
+vim app-server.yml
+
+
+---
+- hosts: ops
+  connection: ssh
+
+  tasks:
+    - name: install java
+      yum: name=java-1.8.0-openjdk state=present
+
+    - name: download tomcat file
+      get_url:
+          url: "https://downloads.apache.org/tomcat/tomcat-9/v9.0.98/bin/apache-tomcat-9.0.98.tar.gz"
+          dest: "/root"
+
+    - name: untar the file
+      command: tar -zxvf  apache-tomcat-9.0.98.tar.gz
+
+    - name: rename the file
+      command: mv apache-tomcat-9.0.98 tomcat
+    
+    - name: start the tomcat
+      shell: nohup /root/tomcat/bin/startup.sh
+
+    - name: change context.xml file
+      copy:
+        src: context.xml
+        dest: /root/tomcat/webapps/manager/META-INF/context.xml
+
+     - name: change tomcatuser.xml file
+       copy:
+        src: tomcat-users.xml
+        dest: /root/tomcat/conf/tomcat-users.xml
+
+     - name: stop the tomcat
+       shell: nohup /root/tomcat/bin/shutdown.sh
+
+     - name: start the tomcat
+       shell: nohup /root/tomcat/bin/startup.sh
+
+
+    
+ANSIBLE TAGS CONCEPT: If executing the same playbook
+
+vim app-server.yml
+
+
+---
+- hosts: ops
+  connection: ssh
+
+  tasks:
+    - name: install java
+      yum: name=java-1.8.0-openjdk state=present
+
+    - name: download tomcat file
+      get_url:
+          url: "https://downloads.apache.org/tomcat/tomcat-9/v9.0.98/bin/apache-tomcat-9.0.98.tar.gz"
+          dest: "/root"
+
+    - name: untar the file
+      command: tar -zxvf  apache-tomcat-9.0.98.tar.gz
+
+    - name: rename the file
+      command: mv apache-tomcat-9.0.98 tomcat
+      tags: abc
+    
+    - name: start the tomcat
+      shell: nohup /root/tomcat/bin/startup.sh
+
+    - name: change context.xml file
+      copy:
+        src: context.xml
+        dest: /root/tomcat/webapps/manager/META-INF/context.xml
+
+     - name: change tomcatuser.xml file
+       copy:
+        src: tomcat-users.xml
+        dest: /root/tomcat/conf/tomcat-users.xml
+
+     - name: stop the tomcat
+       shell: nohup /root/tomcat/bin/shutdown.sh
+
+     - name: start the tomcat
+       shell: nohup /root/tomcat/bin/startup.sh
+
+
+ansible-playbook app-server.yml --skip-tags "abc"
+
+
+----------------------------------------------------------------------------------------------------------
+
+TAGS EXAMPLE:
+
+vim tags.yml
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks:
+    - name: Install git
+      yum: name=git state=present
+      tags: xyz
+
+    - name: Install java-1.8.0
+      yum: namejava-1.8.0-openjdk state=present
+
+    - name: Install maven
+      yum: name=maven state=present
+      tags: abc
+
+ansible-playbook tags.yml --skip-tags "xyz,abc"
+
+ansible-playbook tags.yml --tags "xyz,abc" ( to perform only those tags)
+
+
+-----------------------------------------------------------------------------------------------
+
+TASK1: WRITE A PLAYBOOK TO START A WEBSERVERs
+
+RedHat = httpd install
+Ubuntu = apache2
+
+TASK2:
+
+WRITE A PLAYBOOK TO DEPLOY A APPLICATION USING WEBSERVER
+
+STAGE-1: WEBSERVER INSTALL
+STAGE-2: START THE WEBSERVER
+STAGE-3: CREATE A FILE CALLED INDEX.HTML IN THIS PATH(/VAR/WWW/HTML)
+STAGE-4: ADD SOME CONTENT
+
+
+----------------------------------------------------------------------------------------------------------------
+
+
+ 
