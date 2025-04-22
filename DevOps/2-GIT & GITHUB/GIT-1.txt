@@ -1,0 +1,172 @@
+GIT (Global Information Tracker)
+
+DevOps LIFE CYCLE:
+
+PLAN: Time, Cost, Programming Languages, Dev, Test, Cloud, Architecture
+
+CODE: GIT ( to maintain the code)  
+BUILD: 
+TEST
+RELEASE
+DEPLOY
+OPERATE
+MONITOR
+
+GIT: It is a version control system(vcs) or source code management (scm).
+GIT: It is a global information tracker and it will maintain multiple
+versions of same file.
+
+What is Git?
+
+. Git is used to track the files.
+. It will maintain multiple versions of the same file.
+. It is platform-independent.
+. It is free and open-source.
+. They can handle larger projects efficiently.
+. It is 3rd generation of vcs.
+. It is written in c programming
+. It came in the year 2005.
+
+----------------------------------------------------------------------
+
+VCS History
+
+SCCM:System Center Configuration Manager
+source code control
+To Track only one file
+
+
+RCS:Revision Control System
+Track multiple files but not directories
+
+
+CVS: Concurrent Version System
+
+Trck multiple files and directories but
+single user
+
+
+SVN: Sub version
+Track multipe files
+and directories
+
+
+GIT: Global Information Tracker
+Distributed version Control System
+
+----------------------------------------------------------------------
+
+GIT tracks changes you made, so you have a record of what has been done and you can revert to specific versions, it makes collboration easy, allowing changes by multiple people to all merged into one source
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+GIT Stages:
+
+working directory -> git add
+                      |
+staging area -> git commit
+                      |
+repository -> git commit
+
+
+Working Directory (local system):
+
+. In this stage git is only aware of having files in the project
+. It will not track these files until we commit those files
+
+Staging Area:
+
+. The staging area is like a rough draft space, it's where you can
+  git add the version of a file or multiple files that you want to save in your next commit
+
+. In other words, in the next version of your project
+
+Repository:
+
+. Repository in Git is considered as your project folder.
+. A repository has all the project-related data.
+. It contains the collection of the files and alsohistory
+  of changes made to those files.
+
+
+Types of Repositories:
+
+Local Repo:
+
+The local Repository is everything in your .git directory. Mainly
+what you will see in your Local Repository are all of your checkpoints
+or commits. It is the area that saves everything( so don't delete it).
+
+
+Remote Repo:
+
+The remote repository is a git repository that is stored on some remote computer.
+
+
+
+Git Alternatives:
+
+Git Lab, Svn, Bit Bucket, P4, Stash, Helix
+
+------------------------------------------------------------------------------------
+
+Git workflow:
+
+
+files to commit -> Staging area    ->  git clone (your compute to    github)  
+(git add*)         (git commit -m)     git pull, git push origin master                         
+github fork  other github repo
+
+
+------------------------------------------------------------------------------------------------------	
+
+Git installation:
+
+. yum install git -y
+
+yum: yellowdog updater modifier
+
+This is a package management tool in linux which is used to install. uninstall and update the tool
+
+To check git version : git --version
+
+To init a git: git init .
+
+Here . means pwd
+
+ex: touch aws
+    ll
+
+To track the file: git add aws ( moves to staging area)
+
+To know whether the file is getting tracked or not: git status
+
+vim aws
+
+Hi this is aws file 
+
+git status
+
+To know whethere tha changes are made are not: git commit -m "my first commit" aws
+
+
+To commit multiple files:   
+
+touch linux winodws mac-os
+
+git add *
+
+git status
+
+git commit -m "all files are commiting" . (every file present in staging area)
+
+To know how many commits are made:  git log
+
+To know the commits including file name : git show  commitid --name-only
+
+
+
+--------------------------------------------------------------------------------------------------------------
+
+
+

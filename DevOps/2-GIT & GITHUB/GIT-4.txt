@@ -1,0 +1,254 @@
+GIT CLASS-4
+
+Firstly install git:
+
+To know which branch we are in:
+ex: touch aws azure gcp
+    git add azure
+    git add aws
+    git add gcp
+    git commit -m "azure" azure
+    git commit -m "gcp" gcp
+    git commit -m "aws" aws
+Firstly of all commit a file
+and then perform the command: git branch
+(Default branch of git)
+
+To create a branch in master branch: git branch devOps(newly created branch)
+.git branch
+
+To switch to branch which is created: git checkout devOps(newly created branch)
+
+Now all the files in master branch will be copied to newly created branch
+
+ex:
+
+touch linux windows mac-os
+
+git add *
+
+git commit -m "all files" .
+
+git log
+
+git checkout master
+
+touch tcs infosys infotech
+
+git add *
+
+git commit -m "all the files" .
+
+git checkout devOps
+
+To delete the branch: git branch -D devops
+
+git checkout master
+
+git branch
+
+git branch vishnu
+
+git checkout vishnu
+
+touch flm
+
+git add flm
+
+git commit -m "flm" flm
+
+git checkout master 
+
+git branch
+
+To merge the file from newly created branch to master branch:
+
+git merge vishnu
+
+ll
+
+If we want merge only specific commits from the newly created branch
+
+ex:
+
+cat>aws
+cat>azure
+cat>flm
+
+git status
+
+git commit -m "flm" flm
+
+git commit -m "azure" azure
+
+git commit -m "aws" aws
+
+git log 
+
+Copy a few commit ids
+
+git checkout vishnu
+
+git log --oneline
+
+git cherry-pick commitid commitid
+
+----------------------------------------------------------------------
+
+git checkout master
+
+To create and switch to the branch: git checkout -b DevOps(new branch)
+
+To delete the branch: git branch -d branchname
+
+Note: We cannot delete the branch we are in
+
+Difference between d and D
+
+D: If the staging branch is not merged with the master branch
+   if we want to delete the commits in the staging branch then we use
+   D
+
+d: If we want the delete the branch after merging with master branch    we use d
+
+ex:
+
+ git checkout -b feature
+
+ ll
+
+ touch file{1..5}.java
+
+ git add *
+
+ git commit -m "all files commiting" .
+
+ git checkout master
+
+ git branch -d feature ( it doesn't get deleted)
+
+ git merge feature
+
+ git branch -d feature ( it works)
+
+ NOTE: git branch -D feature ( if we want to delete forcefully without merging)
+
+To change the name of branch: git branch -m oldbranchname newbranchname
+
+ex: git branch -m vishnu satwik
+
+-----------------------------------------------------------------------------
+
+MERGE CONFLICT:
+
+If there is a file named AWS has ( hi this is aws data) in master branch and when the data is copied to staging branch and the data is changed to (123327) number format. Then we have different data under the same filename. Here Git gets confused and gets into conflict
+
+ex:
+
+mkdir folder1
+
+git init .
+
+cat>aws
+(hi this is aws data)
+
+git add aws
+
+git commit -m "aws" aws
+
+git checkout -b devops
+
+cat>aws
+(1234566)
+
+git commit -m "aws" aws
+
+git checkout master
+
+cat aws
+
+cat>>aws
+
+Thi is aws
+
+git commit -m "aws" aws
+
+git merge devops
+
+cat aws
+(we get conflict msgs)
+
+To resolve this conflict we have to give a vim method 
+open the vim file -> and change the data acc to the requirements. Because conflict is raised again we have to again track the data
+and commit again . No need to mention file name while commiting
+
+vim aws
+
+git add aws
+
+git commit -m "conflict resolved"(file name should not be given)
+
+If merge conflicts should not be performed(conflicts will not be raised): git merge --abort
+
+---------------------------------------------------------------------------------
+
+GIT STASH:
+
+WHY STASH & WHEN STASH:
+
+Let's assume master branch has 3 files and 3 commits, user creates
+feature branch ,where the master's branch data is copied to it ( files and 3 commits)  and the user adds extra data( user does not whethere data is correct or not - then there will be no process of commit) then to check whether the data given is right or wrong user has to check the previous branch but git doesn't allow to switch the branch
+
+To resolve this issue: User uses STASH
+
+STASH: Deletes the data temporarily in the feature branch and allows user to move to master branch
+
+
+EX:
+
+git checkout -b dell
+
+cat>>linux
+(Hi linux)
+
+git add linux
+
+git commit -m "linux" linux
+
+cat>>linux
+(Hi linux or redhat)
+
+git add linux
+
+git checkout master ( it does not allow)
+
+(either commit or stash)
+
+git stash
+
+(data gets deleted temporarily)
+
+cat linux
+(The data which is not commited will not be present)
+
+git checkout master
+
+git checkout dell
+
+To remove the stash and to retrive the data which is temporariy deleted: git stash apply
+ 
+cat linux
+
+git stash clear ( deleted the data permeanently which is not commited)
+
+git stash list(list of stashes)
+
+to remove all the stashes: git stash clear
+
+to remove particualr stash: git stash drop stashid
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+ 
+
+
+

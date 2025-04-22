@@ -1,0 +1,325 @@
+DOCKER SWARM:
+
+DOCKER SWARM IS USED TO RUN APPLICATION IN N NUMBER OF SERVERS
+
+. DOCKER SWARM is an orchestration(group of servers) service within docker that allows us to manage and handle multiple containers at the same time
+
+. It is a group of servers that runs the docker application
+
+. It is used to manage the containers on multiple servers
+
+. This can be implemented by the cluster(group of servers)
+
+. The activities of the cluster are controlled by a swarm manager, and machines that have joined the cluster is called swarm worker
+
+
+  Swarm Worker             Swarm Worker       Swarm Worker
+                          
+   Container                 Container        Container
+ 
+   Container                 Container        Container
+
+   Container                 Container        Container
+ 
+ 
+                            Swarm Manger
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+. Docker Engine helps to create Docker Swarm
+
+. There are mainly worker nodes and manager nodes
+
+. The worker nodes are connected to the manager nodes
+
+. So any scaling or update needs to be done first it will go to the manager node
+
+. From the manager node, all the things will go to the worker node
+
+. Manager nodes are used to divide the work among the worker nodes
+
+. Each worker node will work on an individual service for better performance
+
+
+
+Docker Swarm Components:
+
+SERVICE: Represents a part of the feature of an application
+
+TASK: A single part of work
+
+MANAGER: This manages the work among the different nodes
+
+WORKER: Which works for a specific purpose of the service
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CLUSTER
+
+
+                        MANAGER    CONT-1
+                        
+                        SERVICE --> CONTAINER --> APP
+
+
+WORKER-1                      WORKER-2                WORKER-3
+
+
+
+ONE CONTAINER IS CREATED AN APPLICATION IS DEPLOYED IN IT AND THE APPLICATION CAN BE DEPLOYED IN OTHER SERVERS THROUGH DOCKER SWARM WITHOUT CREATING CONTAINERS IN WORKER NODES
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+A CLUSTER CAN HAVE N NUMBER OF WORKERS AND MANAGERS
+
+MANAGER AND WORKER DIFF: FROM MANAGER: LIST OF SERVICES CAN BE SEEN, UPDATE THE SERVICES, SERVICES CAN BE DELETED, SCale DOWN
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+. sudo -i
+
+. [manager] && [Worker]yum install docker -y
+
+. [manager]docker swarm init --advertise-addr workerinstance@privateip(Connect master to worker node)
+
+. [woker nodes]copy paste the command given in worker nodes
+
+{Other worker nodes should have docker in it}
+
+. [manager]docker node ls
+
+. [Manager Status] --> Leader [Manager]
+
+
+In docker swarm we have to create the services[Not the containers] services create the container
+
+. docker service create --name vishnu --publish 8081:80 nginx
+
+. docker service ls (List of services)
+
+Note: Replicas--mean--> Container
+
+
+Manager
+
+service --> 1 cont         Swiggy --> 3 cont
+                                      5 conts
+            10 cont           4 cont 
+
+PUBG ---> 5 cont     Cont -3       25 cont
+
+
+W1                          W2
+
+ 
+3 cont                      3 cont
+
+20 cont                     15 cont 
+
+cont-2                       cont-1  cont-4 
+
+.docker network ls ( overlay scope because of the swarm)
+
+.docker rm cont-id
+
+When a container is removed automatically another container is created, if not created in manager node it could be created in another worker node
+
+[One service many servers]
+
+.docker service create --name sashank --publish 8082:80 --replicas 5 httpd
+
+.docker service create --name mandalia --replicas 3 --publish 8083:80 shaikmustafa/cycle 
+
+
+vim Dockerfile
+
+FROM nginx
+COPY . /usr/share/nginx/html/
+
+vim index.html
+<h1> This is my web application </h1>
+
+docker build image1 .
+
+
+.docker service create --name cloud --replicas 3 --publish 8084:80 image1
+
+[Note:because the image1 is in only manager so the containers are only created in manager]
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Troubleshooting:
+
+To improve the version or improve the application
+
+Client Website 
+
+Hai Everyone                 100 servers
+
+Good Evening All
+
+
+Code ---> Dockerfile ---> Image(Image-1) ---> Docker Swarm --> 100 servers [till hi everyone]
+
+Code --> Dockerfile ----> Image(Image-2) ---> XYZ Service (Update the Image-2)--> [to add good evening all]
+
+
+[Note:service removed containers are removed]
+
+Using private image push this image to dockerhub to use it efficently:
+
+vim Dockerfile
+<h1> THis is cinem </h1>
+
+.vim index.html
+
+.docker build -t image1 .
+
+
+.docker service create --name cloud --publish 8089:80 --replicas 3 image1
+
+.vim Dockerfile
+
+<h1> THis is cinem </h1>
+<h2> chusanu </h1>
+
+.docker build -t image2 .
+
+.docker service update --image image2 cloud
+
+.vim Dockerfile
+
+<h1> This is cinema </h1>
+<h2> chusanu </h2>
+<h3> Ram Charan </h3>
+
+.docker build -t image3 .
+
+.docker service update --image image3 cloud
+
+.docker service rollback cloud 	
+
+
+Using public image:
+
+. docker service create --name aws --publish 9090:80 -replicas 2 shaikmustafa/cycle
+
+. docker service update --image shaikmustafa/dm aws
+
+. docker service update --image shaikmustafa/mygame aws
+
+. docker service rollback aws
+		
+
+To get into specific version: [use the image and update]
+
+Backend process[terminated containers and running containers]
+
+.docker service ps aws[Containers which are contained only in the specific containers]
+
+Scaling:
+
+.docker service scale aws=10[Overall requirement] --> Scale up
+
+.docker service scale aws=5[Overall requirement]  --> Scale down
+
+We cannot decide which containers could be deleted:
+
+Service Logs:
+
+docker service logs aws
+
+
+Service inspect:
+
+docker service inspect aws
+
+
+To remove the service:
+
+docker service rm aws
+
+
+Node level:
+
+To see list of nodes:
+
+docker node ls
+
+[Take another server worker3]
+
+worker 3:
+
+sudo -i
+
+yum install docker -y
+
+systemctl start docker
+
+add the token
+
+creating new token adding the worker to the manager
+
+[manager].docker swamr join-token worker
+
+add the token to the worker3
+
+
+To remove server from cluster:
+
+worker: docker swarm leave [From the worker]
+
+manager: docker node ls
+
+Status --> down
+
+manager: docker node rm node_id [remove the node from the cluster]
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Overview on Docker Swarm commands:
+
+A CLUSTER CAN HAVE N NUMBER OF WORKERS AND MANAGERS
+
+MANAGER AND WORKER DIFF: FROM MANAGER: LIST OF SERVICES CAN BE SEEN, UPDATE THE SERVICES, SERVICES CAN BE DELETED, SCale DOWN
+
+
+TO CREATE A SERVICE: docker service create --name service_name --publish 8081:80 --replicas 3 image_name
+
+TO SEE LIST OF SERVICE: docker service ls
+
+TO UPDATE IMAGE: docker service update --image image_name servicename
+
+TO ROLL BACK: docker service rollback servicename
+
+TO SCALE: docker service scale service_name=count
+
+TO GET LOGS: docker service logs service_name
+
+TO GET THE CONTAINERS OF A SERVICE: docker service ps service_name
+
+TO INSPECT: docker service inspect service_name
+
+TO REMOVE: docker service rm service_name
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+NODE COMMANDS:
+
+TO INIT THE SWARM: docker swarm init --advertise-addr private-ip
+
+TO SEE THE LIST OF NODES: docker node ls
+
+TO GET THE WORKER TOKEN: docker swarm join-token worker
+
+TO GET THE MANAGER TOKEN: docker swarm join-token manager
+
+TO LEAVE THE NODE FROM SWARM: docker swarm leave
+
+TO REMOVE THE NODE FROM MANAGER: docker node rm node-id
+
+Alt command TO REMOVE THE NODE FROM MANAGER: docker swarm leave --force

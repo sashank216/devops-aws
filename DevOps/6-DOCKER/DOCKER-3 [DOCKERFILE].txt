@@ -1,0 +1,144 @@
+DOCKER-3
+
+.docker pull nginx
+
+.docker run -it -d --name cont-1 nginx ( -it interactive terminal) (-d(detach) foreground and background) does not get into container
+
+. docker inspect cont-1
+ 
+. curl ipaddr  (curl check url)
+
+. To access the container's application (Allow port numbers)
+
+. the ports which are associated to containers known as host ports(0-65500)
+
+. docker run -it -d --name cont-2 -p(publishing a port number to cont) 9090:80 nginx
+
+9090: hostport ---> used to access the application which is running inside the container
+
+80: containerPort ------> it depends on the image
+
+. docker run -it -d --name cont-2 -p(publishing a port number to cont) 8888:80 httpd( even though httpd is not installed it automatically pulls and downloads from the central)
+
+. docker run -it -d --name cont-2 -p(publishing a port number to cont) 2222:80 shaikmustafa/mygame
+
+. docker attach cont-2 ( we cannot enter the containers which are created with -d)
+
+. docker start cont-2
+
+. docker exec is used to perform commands without getting into container
+
+-> docker exec cont-2 ls
+
+-> docker exec cont-2 mkdir devops
+
+---> docker exec cont-2 ls
+
+-> docker exec -it cont-2 /bin/bash(or only bash)
+
+. docker run -it --name cont-serv ubuntu
+
+. touch paytmfiles{1..5}
+
+. ctrl p+q
+
+create an image from this container
+
+. docker commit paytm my-image
+
+. docker run -it --name paytm-2 my-image
+
+. docker run -it --name paytm-3 my-image
+
+ The data replication is not possible
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+DOCKER FILE:
+
+. It is basically a text file which contains some set of instructions
+
+. Automation of Docker image creation
+
+. Always D is capital letters on Docker file
+
+. And Start Components also be Capital letter
+
+
+How it works:
+
+. First you need to create a Docker file
+
+. Build it
+
+. Create a container using the image
+
+
+docker file --> $docker build  --->(create) docker image ---> $docker run ---> $docker container
+
+
+DOCKER FILE COMPONENTS:
+
+FROM: This component is used to define images in docker file
+
+ex:
+FROM ubuntu
+FROM nginx
+FROM httpd
+
+LABEL: This is used to define author of the Docker File
+
+ex:
+name: mustafa
+
+COPY: It is used to copy the files from our local system (EC2) to container
+
+ex:
+COPY source_file destination_file
+
+ADD: It is used to copy the files from our local to container dd the files it will download the files from internet and send to container
+
+ex: ADD url destination
+
+DIFF B/W COPY ADD ADD:  
+
+COPY: It will only copy the files from local to container
+
+ADD: it will not only add the files it will download the files from internet and send to container
+
+RUN: It plays the major role:  It is used to perform a command
+
+ex: RUN touch aws
+    RUN yum install git -y
+
+CMD: It is also used to perform a command
+
+DIFF B/W RUN AND CMD:
+
+RUN: It is used to perform a command while we build the image
+
+CMD: It is also used to perform a command while we run the image or creating the container
+
+
+DOCKER FILE ------BUILD(RUN)--------> IMAGE ------RUN(CMD)--------> CONTAINER
+
+
+ENTRYPOINT: It ise also used to perform a command while we run the image
+
+NOTE: ENTRYPOINT will have high priority than CMD
+      ENTRYPOINT will overwrite the values of CMD
+
+WORKDIR: It is used to create a path inside a container and will directly go to that path
+
+ex:
+WORKDIR /myapp
+
+
+ENV: It is used to pass variables inside a container. It will not overwrite the values in runtime. We can access these values inside a container
+
+ARG: It is used to pass variables inside a containers. We can overwrite the values in runtime. We cannot access these values inside a container
+
+EXPOSE: It is used to publish a container port
+NOTE: This is only for documentation purpose
+ex:
+EXPOSE 80

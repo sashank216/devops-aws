@@ -1,0 +1,357 @@
+
+DOCKER COMPOSE:
+
+ONE SERVER = MULTIPLE CONTAINERS
+
+EC2 INSTANCE
+
+
+   CONT-1               CONT-3          CONT-2
+
+
+
+DOCKER COMPOSE:
+
+YAML FILE WILL BE WRITTEN
+
+FRONTEND:            DATABASE:
+
+CONT-1               CONT-2
+IMAGE                IMAGE
+PORTS                PORTS
+
+BACKEND:
+CONT-2
+IMAGE
+PORTS
+
+DOCKER COMPOSE:
+
+
+. IT IS A TOOL USED TO BUILD, RUN AND SHIP THE MULTIPLE CONTAINERS FOR APPLICATIONS.
+
+. IT IS USED TO CREATE MULTIPLE CONTAINERS IN A SINGLE HOST.
+
+. IT USES YAML FILE TO MANAGE MULTI CONTAINERS AS A SINGLE SERVICE.
+
+. THE COMPOSE FILE PROVIDES A WAY TO DOCUMENT AND CONFIGURE ALL OF THE APPLICATION'S SERVICE DEPENDENCIES (DATABASES, QUEUES, CACHES, WEB SERVICE APIS, ETC).
+
+
+
+COMMANDS:
+
+. START ALL SERVICES: docker compose up.
+
+. STOP ALL SERVICES: docker compose down.
+
+. RUN DOCKER COMPOSE FILE: docker-compose up -d.
+
+. LIST THE ENTIRE PROCESS: docker ps.
+
+
+COMPOSE FILE:
+
+THE DOCKER COMPOSE FILE INCLUDES SERVICES, NETWORKS AND VOLUMES.
+
+THE DEFAULT PATH IS ./docker-compose.yml, compose.yml(yaml=yml)
+
+IT CONTAINS A SERVICE DEFINITION WHICH CONFIGURE EACH CONTAINER STARTED FOR THAT SERVICE.
+
+
+COMPOSE INSTALLATION:
+
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)" -o/usr/local/bin/docker-compose
+
+ls /usr/local/bin/
+
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+docker-compose version
+
+
+FILE NAMES VALID:
+
+docker-compose.yml
+docker-compose.yaml
+compose.yml
+compose.yaml
+
+
+. version - specifies the version of the Compose file.
+
+. services - It services in your application.(when service created container is created)
+
+. networks - you can define the networking set-up of your application.
+
+. volumes - you can define the volumes used by your application.
+
+. configs - configs lets you add external configuratio to your containers. Kepping configurations external will make your containers more generix.
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+. yum install docker -y
+
+. vim docker-compose.yml
+
+---
+version: '3'
+services:
+   cloud:
+       image: nginx
+       ports:
+         - "8083:80"
+
+
+.docker-compose up
+
+.docker ps
+
+.docker-compose down(automatically container will be stopped and removed)
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+. vim docker-compose.yml
+
+---
+---
+version: '3.3'
+services:
+  pubg:
+    image: shaikmustafa/cycle
+    ports:
+      - "8081:80"
+
+  swiggy:
+    image: shaikmustafa/dm
+    ports:
+      - "8082:80"
+
+  zomato:
+    image: shaikmustafa/mygame
+    ports:
+      - "8083:80"
+
+
+. docker-compose up -d
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.mkdir movie train
+
+. cd movie
+
+. vim index.html
+
+<h1> This is movie tickets </h2>
+
+.vim Dockerfile
+
+FROM nginx
+COPY . /usr/share/nginx/html/
+
+cd ..
+
+cd train
+
+. vim index.html
+
+<h1> This is train tickets service </h2>
+
+.vim Dockerfile
+
+FROM nginx
+COPY . /usr/share/nginx/html/
+
+.cd
+
+.docker build -t image1 movie/
+
+.docker build -t image2 train/
+
+
+
+vim docker-compose.yml
+
+---
+
+version: '3'
+services:
+    movie:
+       image: image1
+         ports: 
+           - "8084:80"
+
+    train:
+       image: image2
+         ports:
+           - "8085:80"
+
+
+docker-compose up -d
+
+
+
+NOTE: If any changes in the image [in the index.html file] then
+
+
+[build represents where docker file is present]
+
+adv: N number of changes n number of services will be updated
+---
+
+version: '3'
+services:
+    movie:
+       build: ./movie/
+         ports: 
+           - "8084:80"
+
+    train:
+       build: ./train/
+         ports:
+           - "8085:80"
+
+.docker-compose build
+
+.docker-compose down
+
+Note: To view the images in docker-compose.yml
+
+.docker-compose images
+
+.docker-compose config
+
+NOTE: To Stop the containers of the services[Networks system , file sytems ,won't work]
+
+.docker-compose stop
+
+.docker ps -a
+
+NOTE: To Start the containers of the services
+
+.docker-compose start
+
+
+NOTE: To pause the containers of the services[Networks work, file system works 
+
+.docker-compose pause
+
+
+NOTE: To unpause the containers of the services
+
+.docker-compose unpause
+
+NOTE: To view only compose files
+
+. docker-compose ps
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+.docker-compose down
+
+. docker ps
+
+. docker stop $(docker ps)
+
+. docker container prune
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+vim docker-compose.yml
+
+---
+version: '3'
+services:
+   one:
+     image: nginx
+     ports:
+      - "8089:80"
+     volumes:
+       - "volume-one"
+
+     networks:
+       -  "network-one"
+
+   two:
+    image: httpd
+    ports:
+     - "8088:80"
+    volumes:
+      - "volume-two"
+    networks:
+      - "network-two"
+
+networks:
+  network-one:
+     driver: bridge
+
+networks-two
+    driver: bridge
+
+
+.docker-compose up
+
+
+. docker volume ls
+
+. docker network ls
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+TO CREATE DATABASE CONTAINERS:
+mysql database port number:3306
+
+-e environment varibales(to store the values) we can access the values which are passing in the env variables in the container
+
+-arg(to store the values) we cannot access the values which are passing in the env variables in the container
+
+.docker volume create database
+
+.docker volume ls
+
+.docker run -d --name database-cont -v database:/database -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root mysql/mysql-server:5.7
+
+.docker exec -it database-cont /bin/bash
+
+TO LOGIN INTO THE DB[-u (username) (-p password)
+
+mysql -uroot -proot
+
+mysql> SHOW DATABASES;
+
+mysql> CREATE DATABASE vishnu;
+
+mysql> USE vishnu;
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+TO EXECUTE COMPOSE FILES: docker-compose up -d
+
+TO BUILD THE DOCKER FILES: docker-compose build
+
+TO DELETE ALL SERVICES: docker-compose down
+
+TO STOP ALL CONTAINERS: docker-compose stop
+
+TO START ALL CONTAINERS: docker-compose start
+
+TO PAUSE ALL CONTAINERS: docker-compose pause
+
+TO UNPAUSE ALL CONTAINERS: docker-compose unpause
+
+TO GET LOGS FROM CONTAINERS: docker-compose logs
+
+TO GET LIST OF CONTAINERS: docker-compose ps
+
+TO GET LIST OF IMAGES: docker-compose images
+
+TO GET CONFIG DETAILS OF COMPOSE FILE: docker-compose config
+
+

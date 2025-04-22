@@ -1,0 +1,132 @@
+LINUX-2
+
+FILE COMMANDS:
+
+To create a file in linux: touch filename
+To know whether file is created or not: ll(long list) or ls(Short list)
+
+Difference b/w ll and ls : ll(file information) and ls( Only file names)
+
+
+The type of file is know as regular file: text based data
+not possible to store images,videos etc...
+
+To create multiple files: touch filename filename filename
+
+To create sequential files: touch filename{1..5}
+
+To see full list of files: ll -a(all)
+
+Difference b/w ll -a and ll: ll -a(then hidden files are visible) and ll (only files)
+
+To create hidden file: touch .filename
+To create hidden files: touch .filename .filename .filename
+
+To showcase the files in reverse order: ll -r
+
+To showcase the recent files: ll -t(time based)
+
+ll -lrt ll-rtl ll -trl
+
+To delete the file: rm filename
+To delete multiple files: rm filename filename filename
+
+To delete the file without permission: rm -f filename
+
+To delete the files without permission: rm -f filename filename filename
+
+To delete the files which are sequential: rm -f filename{1..5}
+
+To delete all the files: rm -f *
+
+To remove the hidden file: rm -f .filename
+
+To remove the hidden files: rm -f .filename .filename .filename
+
+To remove the files which are starting specific letter: rm -f letter*
+
+touch file{1..5}.txt
+touch file{1..5}.py
+touch file{1..5}.java
+
+To delete the specific type of files: rm -f *.type of file (rm -f *.txt)
+
+
+Directories(Folders):
+
+To create a directory: mkdir(make directory) foldername
+
+(-rw-r--r-- 1 root root 0 sep 16 15:18 linux) --> For normal files
+ there is 1 which is called ACl(Access Control list)
+      
+                  Diiference b/w them
+
+(drwxr-xr-x 2 root root 0 sep 16 15:18 AWS) --> For directory filess
+ there is 2 which is called ACl(Access Contro list)
+
+To create multiple directories: mkdir folder folder folder
+
+To create sequential directories: mkdir git pull folder{1..5}
+
+To remove the directory: rmdir folder
+
+To remove multiple directories: rmdir folder folder
+
+To remove sequential directories: rmdir folder{1..5}
+
+rmdir = Only for empty directories
+
+To remove all the files and folders: rm -rf*
+
+To insert a data in the file: cat>filename
+Hi I am Vishnu
+DevOps Engineer
+To save the data: ctrl+d
+
+To read the data in the file: cat filename
+
+To append the data in the file: cat>>filename
+Hi I am Vishnu
+DevOps Engineer
+I work on AWS Cloud
+
+To rewrite the data (to overwrite the data (remove the previous data)) : cat>filename
+
+[Editors of linux(vim, nano)]
+To modify the data: 
+
+To insert data in the file without the filename: cat>filename
+
+Note:  Console: windoes
+       copy -> manual
+       paste -> ctrl + shift +v
+       shift + insert
+
+       terminal: windows/macos
+       copy: select
+       paste: right click
+
+To display the data including line numbers: cat -n(line number) filename
+
+To print top 10 lines in file: head filename
+
+To print last 10 lines in file: tail filename
+
+To print in b/w lines: sed -n '6(line number),26(line number)p' filename
+                      (sed -n '6,26p' filename)
+
+To print that top to bottom lines and bottom lines to top: tag filename
+
+To reverse the data: rev filename
+
+To read the from multiple files: cat file1 file2
+
+To read the from multiple files: more file1 file2
+
+To get no of lines, words and letters in afile: wc filename
+
+Only lines: wc -l filename
+
+Only words: wc -w filename
+
+Only letters: wc -c filename

@@ -1,0 +1,130 @@
+DOCKER NETWORK:
+
+
+172.17.0.1 <---
+
+
+172.17.0.2 <---   BRIDGE[NETWORK]  <---- DOCKER
+
+
+172.17.0.3 <---
+
+
+
+FRONTEND CONTAINER  ------->  BACKEND CONTAINER    
+
+172.13.02           ------->        172.13.03
+
+
+
+CONNECT FRONTEND NETWORK WITH BACKEND NETWORK
+
+ 
+
+1 Network - 65,531 containers can be created 
+
+2^32 - 65,536 IP addresses
+
+AWS - Allocates a few ip addrs
+
+DOCKER - 65,534 containers are provided - remaining two are broad casting services
+
+172.14.0.1
+0.2
+0.3
+0.4
+172.14.256.256
+ 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+WHY DOCKER NETWORK:
+
+Lets assume we are having 2 containers like APP container and DB container. This App container has to communicate with DB container. So the developer will write a code to connet the application to the DB container
+
+The IP addr of a container is not permanent of a container is removed due to hardware failure a new container will be created with a new IP, which can cause connection issues.
+
+To resolve this issue we are using docker networks to create our custom network.
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Docker networks are used to make a communication between the multiple containers that are runnig on same or different docker hosts. We have different types of docker networks.
+
+.Bridge Network
+.Host Network
+.None network
+.Overlay network
+
+BRIDGE NETWORK: It is a default network that container will communicate with each other within the same host.
+
+HOSTS NETWORK: When you want your container IP and ec2 instance IP same then you use host network
+
+NONE NETWORK: When you don't want the container to get exposed to the world, we use none network. It will not provide any network our container.
+
+OVERLAY NETWORK: Used to communicate containers with each other across he multiple docker hosts
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+LIST OF NETWORKS: docker network ls
+
+docker run -it --name cont1 ubuntu
+
+docker run -it --name cont2 ubuntu
+
+docker ps -a
+
+docker inspect cont1
+
+docker attach cont-1
+
+apt update -y
+
+apt install iputils-ping 
+
+ping ipaddr
+
+docker network create abc
+
+docker network ls
+
+docker network inspect cont-1
+
+docker run -it --name abc-cont-1 --network abc ubuntu
+
+docker network inspect abc-cont-1
+
+docker attach abc-cont-1
+
+apt update -y
+
+apt install iputils-ping
+
+ping ipaddr [does not work]
+
+
+docker network connect abc cont-2
+
+docker attach cont-2
+
+docker inspect abc-cont-1
+
+copy ipaddr
+
+docker attach cont-2
+
+ping ipaddr[of abc-cont-1]
+
+docker attach abc-cont-1
+
+ping ipaddr[of cont-2] it does not work
+
+docker network connect bridge abc-cont-1
+
+docker network
+
+docker network disconnect abc cont2
+
+docker network prune[unused networks]
+

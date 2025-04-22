@@ -1,0 +1,110 @@
+K8S[Concept]
+
+
+WhY Kubernetes?
+
+Earlier We used Docker Swarm as a container orchestration tool that we used to manage nultiple containerized application on our environments
+
+Features         Docker Swarm           Kubernetes
+
+Setup             Easy                   Complex
+
+
+Auto Scaling      No auto Scaling       Auto Scaling
+
+
+Community         Good Community         Greater Community for users documentation,support and resources
+ 
+
+GUI                NO GUI                  GUI
+
+
+Kubenetes:
+
+It is an open source container orchestration platform.
+
+It is used to automate many of the manual processes like deploying, managing and scaling containerized application
+
+K8s was developed by Google using GO language
+
+Google donated K8's to CNCF in 2014
+1st version was released in 2015
+
+
+
+Why K8S:
+
+Containers are a good and easy way to bundle and run your applications. In a production env, you need to manage the containers that run the applicatios and ensure that there is no downtime.  In docker we sues docker swarm for this, but any how docker has drawbacks!
+
+so we moved to k8s
+
+
+
+
+
+Architecture:
+                       k8s Master
+
+
+
+
+
+
+Operator <--------------[kube]API Server ------> Controller manager           USers                
+                         |
+                         |          ------> Scheduler
+                         |
+                         |                   etcd
+                         |
+                         |
+                         |
+                         |               |__________________________
+-----------------------------------------------------
+|                       |________________|          |              |
+|                       |                           |              |
+|                       |                           |              |
+|                       |                           |            ---|
+                        |
+Kubelet   cAdvisor   Kube-Proxy               Kubelet   cAdvisor   Kube-Proxy 
+           
+
+
+
+Pod        Pod        Pod                        Pod     Pod         Pod
+
+
+
+                                Plugin Network
+
+
+                                                        
+K8S Node                                                 K8S Node
+
+------------------------------------------------------------------------------
+
+How it works
+
+ get pods
+------------------>  API SERVER  ------------------>  ETCD CLUSTER
+<-----------------               <------------------
+
+
+
+
+Authenticate User -----> Validate Request --------> Retrieve Data
+
+------------------------------------------------------------------------------
+
+How Pod is Created:
+
+create pods                               5. Update the pod data     [ETCD CLUSTER]
+------------->    API-SERVER<----|      -------------------------->                             
+1. Request        |          --| ---------4. Creates a pod in worker node--------------------------->
+                  | 2. Request |   
+                  |--          | 
+                    
+                     SCHEDULER  -----------3. Find the perfect node to create-----------------------------> Kubelet
+                                <----------------------------------------  
+
+
+------------------------------------------------------------------------------

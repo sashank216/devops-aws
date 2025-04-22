@@ -1,0 +1,348 @@
+DOCKER STACK
+
+.Adv of Docker Stack : Can create port trainer (It is like GUI to our Docker to - create container 
+- containers monitor
+- Build Images etc
+
+
+.To install port trainer- we need stack - stack needs compose and swarm
+
+.Take two servers worker and manager
+
+
+
+PORTAINER:
+
+. It is a container organizer, designed to make tasks easier, whether they are clustered or not.
+
+. able to connect multiple clusters, access the containers, migrate stacks between clusters
+
+.It is not a testing env mainly used for production routines in large companies.
+
+. Portainer consists of two elements, the Portainer server and the Portainer Agent.
+
+.Both elements run as lightweight Docker containers on a Docker engine
+
+
+
+Portainer: 3rd Party/Monitoring and etc
+
+. Must have swarm mode and all ports enable with docker engine
+
+. curl -L https://downloads.portainer.io/ce2-16/portainer-agent-stack.yml -o portainer-agent-stack.yml
+
+. docker stack deploy -c portainer-agent-stack.yml portainer
+
+. docker ps
+
+. public-ip of swarm master:9000
+
+. docker stack ls
+
+. docker ps
+
+After creating volume in the portainer: upload the files in the volume
+(local files can be installed)
+cd /var/lib/docker/volumes/
+
+ll
+
+cd _data
+
+cat composeinstallation
+
+
+
+
+DOCKER SWARM:
+
+SINGLE CONTAINER --> MULTIPLE SERVERS
+
+
+DOCKER COMPOSE:
+
+MULTIPLE CONTAINERS --> SINGLE SERVER
+
+
+DOCKER STACK
+
+MULTIPLE CONTAINERS --> MULTIPLE SERVERS
+
+
+DOCKER STACK = DOCKER COMPOSE + DOCKER SWARM
+
+COMPOSE = MULTIPLE CONTAINERS
+SWARM = MULTIPLE SERVERS
+
+
+
+.yum install docker && systemctl start docker
+
+sudo curl -L "https://github.com/docker/compose/releases/download/1.29.1/docker-compose-$(uname -s)-$(uname -m)" -o/usr/local/bin/docker-compose
+
+ls /usr/local/bin/
+
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+
+docker-compose version
+
+. docker swarm init -advertise-addr @publicip
+
+copy the toke and paste in the worker server
+
+. docker swarm ls
+
+. vim docker-compose.yml
+
+---
+version: '3'
+services:
+   mywebapp:
+       image: shaikmustafa/cycle
+       ports:
+         - "8081:80"
+
+To deploy the stack:
+
+.docker stack deploy --compose-file docker-compose.yml MyFirstStack
+
+. docker ps -a
+
+List of stacks: docker stack ls
+
+Remove the stack: docker stack rm stackname
+
+
+Multiple containers:
+
+---
+version: '3'
+services:
+     one:
+       image: shaikmustafa/dm
+       ports:
+         - "8081:80"
+
+     two:
+       image: shaikmustafa/cycle
+       ports:
+        - "8082:80"
+
+
+     three:
+        image: shaikmustafa/mygame
+        ports:
+         - "8083:80"
+
+
+docker stack deploy --compose-file docker-compose.yml MyApp
+
+
+JAVA APPLICATION:
+
+[ONE]
+
+.yum install git -y
+
+.git clone url
+
+.git checkout master
+
+.yum install java-1.8.0-openjdk -y
+
+.yum install maven -y
+
+.mvn clean package
+
+. ll target/
+
+. vim Dockerfile
+
+FROM tomcat:8.0.20-jre8
+COPY target/*.war /usr/local/tomcat/webapps/swwiggy.war
+
+
+.docker build -t image1 .
+ 
+.sdocker run -itd --name cont1 -p 9090:8080 image1
+
+Send files from local to container: copy command
+
+[.tomcat url]
+
+wget url
+
+ll
+
+untar apache-tomcat-9.0.83.tar.gz
+
+cd apacje-tomcat-9.0.83/conf/
+
+cp tomcat-users.xml ../../
+
+cd ../../
+
+rm -rf apache-tomcat-9.0.83*
+
+vim tomcat-users.xml
+3yy
+
+"manager-gui"
+"manager-script"
+username="tomcat"  "admin@123"   roles="manager-gui", manager-script"
+
+
+FROM tomcat:8.0.20-jre8
+COPY tomcat-users.xml /usr/local/tomcat/conf/
+COPY target/*.war /usr/local/tomcat/webapps/swwiggy.war
+
+
+docker build -t image2 .
+
+docker run -itd --name cont123 -p 2222:8080 image2
+
+---------------------------------------------------------------------------------------------
+
+docker ps -a
+
+nodejs-docker
+
+git clone url 
+
+ll 
+cd nodejs-docker
+
+rm Dockerfile
+
+vim Dockerfile
+
+FROM node:16
+WORKDIR /app
+COPY package*.json ./
+RUN npm install 
+COPY . .
+EXPOSE 80
+CMD ["node", "index.js"]
+
+
+docker build -t mynodeimage .
+
+docker run -itd --name cont111 -p 1111:80 mynodeimage
+
+.To reduce docker image size: we will use multi stage docker files
+
+
+#THIS IS FIRST STAGE, HERE THE APP WILL GET DEVELOPED
+
+FROM node:19-alpine AS base
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+CMD npm start
+
+#THIS IS SECOND STAGE : APP WILL GET DEPLOYED
+FROM base AS final
+RUN npm install --production
+COPY npm start
+CMD ["node", "index.js"]
+
+docker build -t aws .
+
+docker run -itd --name cont11 -p 6666:80 aws
+
+---------------------------------------------------------------------------------------------
+DOCKER DIRECTORY DATA:
+
+DOCKER DIRECTORY DATA:
+
+We use docker to run the images and create the containers, but what if the memory is full in instance, we have to add anothe volume to the instance and mount it to the docker engine.
+
+Lets see how we do this
+. Uninstall the docker - yum remove docker -y
+. remove all the files -rm -rf/var/lib/docker/
+. create a volume in same AZ & attach into the instance
+. to check it is attached or not -fdisk -l
+. to format it -fdisk /dev/xvdf --> n p 1 enter enter-w
+. set a path -vi /etc/fstab (/dev/xvdf1   /var/lib/docker/  ext4 defaults 0 0)
+. mkfs.ext4 /dev/xvdf1
+. mount -a
+. install docker -yum install docker -y && systemctl restart docker
+. now you can see -ls /var/lib/docker
+. df -h
+
+
+
+EC2 INSTANCE
+
+
+  JENKINS                         DOCKER
+
+  /VAR/LIB/JENKINS               /VAR/LIB/DOCKER
+
+   JOB                              CONT
+   PLUGIN                           VOLUME
+   USER                             IMAGE
+         |                            |[SEPERATE EBS-2 FOR DOCKER]
+         |
+                |[INSTANCE]
+            EBS=1 
+
+
+
+
+.JENKINS SETUP
+
+. yum remove docker -y
+
+. cd /var/lib/docker/
+
+. rm -rf *
+
+
+CREATE VOLUME 
+
+VOLUME TYPE
+SSD(GP2)
+
+
+
+. DEVICE NAME
+ /dev/xvdf
+
+
+TO KNOW N NUMBER OF VOLUMES IN OUR INSTANCE: fdisk -l
+
+fdisk /dev/xvdf
+n[new partition[disk parrition
+p[primary partition]
+command (m for help):w safe
+
+fdisk -l
+
+vi /etc/fstab
+/dev/xvdf1      /var/lib/docker/[mounting path]    ext4 defaults 0 0
+
+mkfs.ext4 /dev/xvdf1[partition done]
+mount -a
+
+
+df -h
+
+
+yum install docker -y
+
+systemctl start docker
+
+df -h
+
+docker pull nginx
+
+docker pull jenkinsci/jenkins
+
+docker pull mysql
+
+
+df -h

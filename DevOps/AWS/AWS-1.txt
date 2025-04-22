@@ -1,0 +1,79 @@
+
+
+2 IP Address
+
+1. Public IP: To access the applications through internet(Which are running in that server)
+IT is also used to connect the instance
+
+2. Private IP: To access the application within the server
+
+
+
+To modify the volume user selects the instance and gets into storage and clicks on volume id and modifies the volume
+
+(Volume gb can be modified for once in every six hours)
+
+So create another volume and attch the volume( Availability zones should be same)
+
+One Instance can have as many security groups it has
+
+Without stopping instance - Instance type cannot be stopped
+
+Instance stop->Actions->Instance Settings->Change Instance type->Select->Start
+
+
+INSTANCE MODIFICATIONS:
+
+NAME TAGS
+
+VOLUME 
+
+SECURITY GROUPS
+
+INSTANCE TYPE(CPU AND RAM OF INSTANCE)
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+KEYPAIR:
+
+When we launch an instance with keypair, it generates 2 keys
+
+1. PUBLIC KEY (LOCAL SYSTEM)
+
+2. PRIVATE KEY (LOCAL SYSTEM)
+
+WHEN YOU WANT TO CONNECT YOUR INSTANCE THE PUBLIC KEY WILL HAVE TO MATCH WITH PRIVATE KEY, THE PUBLIC KEY WILL HAVE TO MATCH WITH PRIVATE KEY
+
+IF WE CREATE AN INSTANCE WITH KEY-PAIR, WE CAN CONNECT OUR INSTANCE ON MULTIPLE WAYS
+
+1. CONSOLE (WITH KEY PAIR OR WITHOUT KEY)
+
+2. TERMINAL (WITH KEY-PAIR) - IT IS USED CONNECT THE LINUX MACHINES
+
+EX: PUTTY, MOBAXTREM
+
+TYPES OF KEY-PAIRS: 
+
+. RSA - SUPPORTS ALL OS TYPES - (IN REAL TIME)
+
+. ED25519 - DOES NOT SUPPORT ON WINDOWS
+
+PRIVATE KEY FILE FORMAT:
+
+.pem
+.ppk
+
+WHY TERMINAL OVER CONSOLE: SPEED AND PERFORMANCE
+
+ONE KEY-PAIR CAN BE USED FOR MANY SERVERS
+
+PPK ---> PUTTY(DOES NOT SUPPORT PEM FILE) (PUTTY PRIVATE KEY)
+
+PEM ---> MOBAXTREM(DOES NOT SUPPORT PPK FILE) (PRIVACY ENHANCED KEY0
+
+CAN CONVERT PEM->PPK FILE(THROUGH PUTTY GEN) BUT CANNOT CONVERT PPK->PEM
+
+REAL TIME ONLY PEM IS USED
+
+
+

@@ -1,0 +1,141 @@
+ANSIBLE:
+
+. It is a configuration Management Tool.
+
+. Configuration: RAM, Storage, OS, Sofware and IP address of device
+
+. Management: Update, Delete, Add.
+
+. Amsible is simple open-source IT engine which automates application deployment.
+
+. Orchestration, Security and compilance.
+
+. Uses YAML Scripting language which works on KEY-VALUE PAIR
+
+. Ansible GUI is called as Ansible Tower. It was just Drag and Drop
+
+. Used Python for Backend.
+
+
+
+-----------------------------------------------------------------------------------------------
+
+WHY ANSIBLE:
+
+While managing the multiple servers its hard to keep their configuration identical. If you have multiple servers which needs to configure the same setup in all while doing the one to one server their might be chances to  iss some configuration steps in some servers.
+
+
+Thats why automation tools come into play! The automation tools like Ansible, Chef, Puppet and SaltStack all are based on a simple principle.
+
+
+Describe The Desired State of the System.
+
+------------------------------------------------------------------------------------------------------
+
+Advantages Of Ansible: Perform Master & Slave Architecture
+
+Ansible uses plain SSH. So nothing needs to install on client machines. but other automation tools like Chef/Puppet need to install agent on client machine when we need to perform a task.
+
+
+Ansible is light weight, relative easy to use and speed of deployment compared to other tools. Ansible handles either via standard SSH commands , or the Paramiko module which provides a python interface to SSH2.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+ANSIBLE WORKFLOW:                       SSH
+                                     ---------->  Host 1(group A)
+
+              ANSIBLE                   SSh
+              Management             -----------> Host 2(group B)
+               Node                     SSh
+                                     -----------> Host N(group B)
+   Playbook          Inventory
+                       [group A]
+                        host 1
+                       [group B]
+                         host 2
+                         host N
+
+
+
+
+
+CHEF WorkFlow
+
+                Workstations              --Knife(Upload confg----->    Chef Server ---->  Chef Client (CLoud nodes) (physical Nodes)  (Virtual Nodes)
+
+         Recipes    *Cookbooks    Policies
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+MASTER-SLAVE CONCEPT:
+
+SETUP:
+
+ANSIBLE SERVER
+
+sudo -i
+sudo amazon-linux-extras install ansible2 -y
+yum install python-pip -y
+vi /etc/ansible/hosts
+vi /etc/ansible/ansible.cfg
+
+
+ALL NODES
+useradd ansible
+passwd ansible
+visudo (move to 100th line :100(100gg))
+[root    ALL=(ALL)    ALL]
+[ansible ALL=(ALL)    NOPASSWD: ALL]
+vi /etc/ssh/sshd_config(move to 63rd line :63(63gg))
+[PasswordAuthentication yes] to connect slave to master server for authentication
+sudo systemctl restart sshd
+sudo systemctl status sshd
+
+ANSIBLE USER IN MASTER SERVER
+
+ssh-keygen
+cd .ssh/
+ssh-copy-id ansible@ipaddr(slave server ipaddr)
+ssh ansible@ipaddr( to connect to slave server)
+
+SLAVE SERVER:
+
+su - ansible
+ll -a
+cd .ssh/
+ll
+cat authorized_keys
+
+
+INVENTORY:  ONLY THROUGH ROOT USER INVENTORY SETUP
+
+ANSIBLE USER IN MASTER SERVER
+
+default path: cd /etc/ansible/
+ll
+vi /etc/ansible/ansible.cfg
+remove #inventory(hosts file in ansible where we keep the ipaddr) #sudo_user
+
+ll
+vim /etc/ansible/hosts
+
+# ex 2:
+[dev]
+ipaddr
+ipaddr
+
+[test]
+ipaddr
+ipaddr
+
+cd
+
+su -ansible
+ansible all -m ping
+
+ansible all --list-hosts
+
+--------------------------------------------------------------------------------------------------------------------

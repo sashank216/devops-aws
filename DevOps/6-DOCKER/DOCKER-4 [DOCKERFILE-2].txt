@@ -1,0 +1,122 @@
+DOCKER FILE:
+
+vim Dockerfile
+
+FROM ubuntu
+RUN apt update -y
+RUN apt install apache2 -y
+COPY index.html /var/www/html/
+CMD ["/usr/sbin/apachectl", "-D", "FOREGROUND"]
+
+vim index.html
+<h1> HEY There, This is my web application </h1>
+
+docker build -t myapp:1 .
+
+docker run -it -d --name -p 8081:80 cont-1 myapp:1
+
+
+vim Dockerfile
+
+FROM centos:centos7
+MAINTAINER name mustafa
+RUN yum install httpd -y
+COPY index.html /var/www/html/
+EXPOSE 80
+CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
+
+docker build -t myapp:2 .
+
+docker run -itd --name cont2 -p 8082:80 myapp-2
+
+
+vim Dockerfile
+
+FROM ubuntu
+RUN apt update -y
+RUN apt install nginx -y
+COPY index.html /var/www/html/
+EXPOSE 80
+CMD ["nginx", "g", "daemon off;"]
+
+docker run -itd --name cont3 -p 8083:80 myapp:3
+
+
+FROM nginx
+COPY index.html /usr/share/nginx/html/
+
+vim Dockerfile
+
+docker build -t devops:1 .
+
+docker images
+
+docker run -itd --name cont4 -p 8084:80 devops:1
+
+
+vim Dockerfile
+
+FROM httpd
+COPY index.html /usr/local/apache2/htdocs/
+
+docker build -t devops:2 .
+
+docker images
+
+docker run -itd --name cont5 -p 8085:80 devops:2
+
+yum install git -y
+
+git clone _________________________
+
+cd code
+
+cd html/
+
+vim Dockerfile
+
+FROM nginx
+COPY . /usr/share/nginx/html
+
+docker build -t cycle  .
+
+docker images
+
+docker run -itd --name cont6 -p 8086:80 cycle
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+DIFF B/W RUN VS PULL
+
+RUN: It first verifies whether the local system has the image and if it is not present it checks in the hub and create the container
+
+PULL: It will download the image from docker hub but it will create the container
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+To inspect the image
+
+docker image inspect myapp:2
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+IMAGE LAYERS
+
+FROM UBUNTU   -------------> LAYER-1
+MAINTAINER name vishnu
+RUN apt update -y -------------> LAYER-2
+RUN touch vishnu.txt -------------> LAYER-3
+RUN  apt install httpd -y -------------> LAYER-4
+EXPOSE 80
+COPY index.html /var/www/html ------------> LAYER-5
+
+
+docker build -t devops:3 . 
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+To remove the image:
+
+docker rmi image(cannot delete the images until the container is stopped)
+
+docker rmi $(docker images)
+
+docker image prune -y 

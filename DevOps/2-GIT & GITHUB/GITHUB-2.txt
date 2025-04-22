@@ -1,0 +1,161 @@
+Private Repo cannot be accessed by everyone
+
+Public Repo can be accessed by anyone
+
+Pull before push
+
+Merging Possibility:
+
+Compare and pull the branches
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+Cloning:
+
+Git clone: Entire repo into our system we will clone the repo
+
+Diff b/w clone and pull:
+
+CLone: will download entire repo
+
+pull: only pulls the changed files
+
+Clone: git clone url
+
+To get all the branches from the cloned repo: git branch -a
+
+At a time only one repository we can push
+
+To unlink the repo: git remote rm origin
+
+-------------------------------------------------------------------------------
+
+To connect with ssh: To overcome the credinitals
+
+ssh-keygen
+cd .ssh/
+cat public key
+
+copy the key
+
+settings>>>>ssh and GPG keys>>>> Add new SSH Key >>> paste the key
+
+cd
+
+git push -u origin master
+
+
+------------------------------------------------------------------------------------------
+
+
+Danger Zone: 
+
+To change private repo into puvlic repo
+
+
+settings>>>change visibility
+
+
+Delete branch protection rules:  Disable branch protection rules
+
+If branch protection rule is enable we cannot delete the branch 
+and others cannot access the branch
+
+
+-------------------------------------------------------------------------------------
+
+To change the ownership:
+
+Danger Zone>>>Transfer Ownership>>> New Owner
+
+To archive the repo:
+
+Danger Zone>>> Archive this repo
+
+Danger Zone>>> Delete this repo
+
+-----------------------------------------------------------------------------------------
+
+To create a new folder in Github:
+
+create new file>>> folder1/
+
+-----------------------------------------------------------------------------------------
+
+To download others repo in our system: clone
+
+To download others repo in our GITHUB: fork
+
+search name>>> users>> user >> public repo >> select repo >> click on fork >> untick the main branch only
+
+--------------------------------------------------------------------------------
+
+Rebase:
+
+Create a folder and init it
+
+git init .
+
+git log
+
+touch aws azure gcp
+
+git add *
+
+git commit -m "aws" aws
+
+git commit -m "azure" azure
+
+git commit -m "gcp" gcp
+
+git checkout -b devops
+
+git branch
+
+touch linux windows
+
+git add *
+
+git commit -m "windows"
+
+git commit -m "linux"
+
+git branch master
+
+git rebase devops
+
+git log
+
+git revert commit id ( commit's action will be deleted>> commit id will not get deleted>> new commit is created
+
+git log --oneline
+
+
+
+
+TO RESTORE THE FILE:
+
+git restore filename
+---------------------------------------------------------------------------------------------
+
+git diff devops ( to know differences between branches)
+
+---------------------------------------------------------------------------------
+
+git tags: to mention
+
+add the files
+commiting the files
+git tag -a -m "version 1" v1(tagname)
+
+git show tagname
+
+git push -u origin tagname
+
+git tag -d tagname(delete the tagname)
+
+-----------------------------------------------------------------------------------
+
+Alternative of Github:
+
+Bitbucket

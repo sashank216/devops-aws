@@ -1,0 +1,160 @@
+USER COMMANDS:
+
+.To see the list of users in the server: cat /etc/passwd
+
+.To create an user: useradd username
+
+.To know whether user is created or not: cat /etc/passwd
+
+.To get into or switch to the user: su - username
+
+.create a few files in the user: touch aws azure gcp
+
+.Exit from the user: exit
+
+.create a few files in the user: touch oracle salesforce
+
+ and check whether files are present or not
+
+.passwd for the user: passwd
+
+.Directories: cd /home/
+
+.whenver we create any user with that user name a folder is created
+in the home directory	
+
+.Create user with no folder: useradd -M vishnu
+
+.Create user with limitation of the time:  
+
+.useradd -e 2024-12-31 vishnu
+
+.To see the expiry date: chage -l vishnu
+
+.Delete the user: userdel vishnu
+
+.Delete the user with folder: userdel -r vishnu (-r(recursive))
+
+----------------------------------------------------------------------
+
+GROUP COMMANDS:
+
+To see list of groups in a system: cat/etc/group
+
+To add group name: groupadd vishnu
+
+Note: Whenever we create any user, then group will get created automatically and when we delete a user, then group also gets deleted automatically, If you want to create only group  thenthe command is groupadd groupname
+
+delete the group: groupdel vishnu
+
+To add a user in a group: usermod -a -G  groupname username 
+EX: useradd vishnu
+    
+    groupadd sashank
+   
+    usermod -a -G sashank vishnu
+
+    id vishnu
+
+----------------------------------------------------------------------
+
+PERMISSIONS COMMANDS:
+
+CHANGING OWNERS OF A FILE:
+
+ex: [root@] touch aws{1..5}
+    useradd tcs
+    groupadd infosys
+1st root = user = tcs
+2nd root = group = infosys 
+
+For user: chown tcs aws1
+For group: chgrp infosys aws1
+
+To change user and group at a time: chown username:groupname filename
+
+ex: chown tcs:infosys aws3
+
+To change user and group at a time to multiple files: chown user:group file1 file2 file3
+
+To change user and group at a time to all the files: chown username:groupname *
+
+Note: Same follows with the folder
+
+ex: touch folder/file{1..5}
+    chown tcs:infosys *
+
+if you want for the files in folder too: chown -R tcs:infosys *
+
+if you want to change for the files and not folders: chown user:group foldername/*
+----------------------------------------------------------------------
+
+TO change permissions of a file:
+
+r ----->READ: 4
+w ----->Write: 2
+x ----->execute: 1
+- ----->nothing = 0
+
+permssions of the file: chmod 777 filename
+Only when there is executbale permissions: Then the color changes
+
+To change the permissions of the folder along with files: chmod -R 777 foldername
+
+To change the permissions of all the files: chmod 777 *
+
+To change the permissions of a files inside the folder: chmod 777 foldername/*
+
+----------------------------------------------------------------------
+
+SEARCH COMMANDS:
+
+GREP command: Global Regular Expression Print
+This command is used to search for a word in a file:
+SYNTAX: grep "word" filename
+
+ex: vim aws
+data paste
+
+get back to console
+
+grep "user" aws
+including the line number: grep -n "user" aws
+
+it is case sensitive: so to avoid that: grep -n -i "user" aws
+
+To know the count of the word: grep -c -i "user" aws
+
+To search for multiple words: grep -n -i -e "change" "grep" aws
+
+multiple files to search single word: grep -i -n "print file1 fle2
+
+multiple files to search multiple words: grep -i -n -e "print file1 file2
+----------------------------------------------------------------------
+
+Find command and locate command:
+
+Find: find path -name filename
+ex: find /etc/ -name passwd
+ex: touch linux windows mac-os
+
+chown tcs linux mac-os
+chgrp infosys linux mac-0s
+
+. = present directory
+find user with tcs: find . -user tcs
+find group with tcs: find . -group infosys
+
+Locate command:
+
+Locate the file:locate filename
+
+diff b/w locate and find command:
+
+Both search for files but in file command we have to mentionthe path
+in locate in searches in entire server
+
+speed: file >>> locate
+drawback: before using locate we have to update the db
+command: updatedb
+----------------------------------------------------------------------

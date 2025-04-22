@@ -1,0 +1,5 @@
+- Create a Job oe New Item
+
+- Freestyle project and Pipeline
+
+- CI:

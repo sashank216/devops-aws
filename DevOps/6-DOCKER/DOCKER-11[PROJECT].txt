@@ -1,0 +1,406 @@
+DEPLOYING A NODEJS APP USING DOCKER BY IMPLEMENTING CI/CD
+
+STEP-1 LAUNCH AN INSTANCE WITH T2.LARGE
+STEP-2 JENKINS, DOCKER, GIT, [USING GLOBAL TOOL , SONARQUBE]TRIVY
+STEP-3: PLUGINS -> NODEJS, JDK, SONAR, OWASP[OPEN SOURCE WEB APPLICATION SECURITY RPROJECT][DEPENDENCIES CHECK[WHETHERE THEY HAVE BEEN INSTALLED OR NOT]
+STEP-4: CREATE A PIPELINE
+STEP-5: OWASP CONFIGURATION
+STEP-6: DOCKER IMAGE BUILD
+STEP7: CREATE A CONTAINER
+------------------------------------------------------------------------------PROJECT
+
+ZOMATA-REPO[FORK IT]
+
+sudo -i
+
+.yum install git docker -y && systemctl start docker
+
+.chmod 777 ///var/run/docker.sock [full permissions because jenkins interfers
+ to avoid that we give full information]
+
+. sudo amazon-linux-extras enable corretto11
+. sudo yum install java-11-amazon-corretto -y
+
+. jenkins.io
+
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+    https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+sudo yum upgrade
+
+
+. yum install jenkins -y && systemctl start jenkins
+
+
+INSTALL TRIVY
+
+wget https://github.com/aquasecurity/trivy/releases/download/v0.18.3/trivy_0.18.3_Linux-64bit.tar.gz
+
+tar -zxvf trivy_0.18.3_Linux-64bit.tar.gz
+
+mv trivy /usr/local/bin/
+
+ll
+
+vim .bashrc
+
+export PATH=$PATH:/usr/local/bin/
+
+source .bashrc
+
+trivy -version
+
+
+SONARQUBE SETUP[9000 default port number]
+
+.docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
+
+. docker ps
+
+GO TO JENKINS:
+
+GO TO AVAILABLE PLUGINS:
+
+sonar
+
+nodejs
+
+eclipse termuin installer[jdk java tool install]
+
+NOW JAVA AND NODEJS CONFIGURE THAT:
+
+Tools
+
+JDK INSTALLATIONS
+
+Name: jdk17
+
+Install Automatically:
+  java-17.0.8.1+1
+
+
+NODE JS INSTALLATIONS
+
+Name: nodejs
+
+Install Automatically:
+     NodeJS 16.2.0
+
+Ok
+
+INTEGRATE SONARQUBE+JENKINS:
+
+IN SONARQUBE:
+ADMINISTRATION
+
+create user
+
+SECURITY: user
+
+CREATE USER: 
+
+lOGIN:
+JENKINS
+
+NAME:
+JENKINS 
+
+EMAIL:
+JENKINS@
+
+PASSWORD
+
+CREATE
+
+
+GENERATE TOKEN:
+COPY URL
+
+
+GO BACK TO JENKINS
+
+SETTINGS:
+
+CREDENTIALS
+
+SYSTEM CREDENTIALS-> GLOBAL CREDENTIALS-> ADD CREDENTIALS -> KIND[SECRET TEXT] -> SCOPE [GLOBAL, JENKINS, NODES, ALL CHILD ITEMS, ETC]
+
+SECRET: PASTE URL
+
+ID: SONAR-TOKEN
+
+CREATE
+
+INTEGRATE SONAR
+
+MANAGE JENKINS-> SYSTEM -> SONARQUBE SERVERS
+
+NAME: MYSONAR
+
+SERVER URL: URL OF SONAR ONLY TILL 9000
+
+SERVER AUTHENTICAK TOKEN-> SELECT
+
+MANAGE JENKINS -> TOOLS -> SONARQUBE SCANNER
+
+NAME: MYSONAR
+DEFAULT VERSION
+
+ADMINISTRATION:
+
+CONFIGURATION[WEBHOOKS]
+
+CREATE -> NAME[JENKINS] -> URL[JENKINS URL/sonarqube-webhook/] -> create
+
+
+
+BUILD A PIPELINE
+
+DECLARITIVE
+
+Pipeline script
+
+
+pipeline {
+    agent any
+    tools {
+        jdk 'jdk'
+        nodejs 'nodejs'
+    }
+    environment {
+        SCANNER_HOME = tool 'mysonar'
+    }
+    stages {
+        stage("Clean") {
+            steps {
+                cleanWs()
+            }
+        }
+        stage("Code") {
+            steps {
+                git branch: 'main', url: 'https://github.com/sashank216/Zomato-Repo.git'
+            }
+        }
+        stage("Sonarqube Analysis") {
+            steps {
+                withSonarQubeEnv('mysonar') {
+                    sh ''' 
+                        $SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.projectName=zomato \
+                        -Dsonar.projectKey=zomato
+                    '''
+                }
+            }
+        }
+        stage ("Quality Gates") {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'Sonar-token'
+                }
+            }
+        }
+    }
+}
+GO TO SONARQUBE -> MANUALLY -> PROJECT DEPLOY NAME *[JENKINS] -> PROJECT KEY [MYPROJECT] -> MAIN BRANCH NAME ->[main]
+
+LOCALLY -> ANALYZE YOUR PROJECT -> TOKEN NAME [ANALYZE] [GENERATE]
+
+RUN ANALYSIS ON YOUR PROJECT 
+OTHER (FOR JS, TS, GO, PYTHON, PHP, ...)
+
+WHAT IS YOUR OS?
+Linux[select this] Windows macOs
+
+Execute the Scanner
+
+sonar-scanner \
+  -Dsonar... 
+copy
+
+Sonar:
+stage("Sonarqube Analysis"){
+       steps{
+          withSonarQubeEnv('sonar-server'){
+             sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=zomato \-Dsonar.projectkey=zomato'''
+}
+}
+}
+
+pipeline syntax [To change the branch]
+
+
+. cd /var/lib/jenkins/workspace/Dockerproject/
+
+vim Dockerfile
+
+FROM node:16-slim
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
+
+
+GO BACK TO JENKINS:
+
+Demo
+
+Take hello world
+
+pipeline {
+    agent any
+
+    stages {
+        steps('Hello') {
+            steps {
+                cleanWs()-> This removes the file created
+            }
+         }
+         stage("command") {
+             steps {
+                 sh 'mkdir folder1"
+             }
+         }
+    }
+
+[Save]
+
+After Successful build submission
+
+Go back to Declaritive pipeline again
+
+now install nodejs dependecies through pipeline
+
+pipeline {
+    agent any
+    tools {
+        jdk 'jdk'
+        nodejs 'nodejs'
+    }
+    environment {
+        SCANNER_HOME = tool 'mysonar'
+    }
+    stages {
+        stage("Clean") {
+            steps {
+                cleanWs()
+            }
+        }
+        stage("Code") {
+            steps {
+                git branch: 'main', url: 'https://github.com/sashank216/Zomato-Repo.git'
+            }
+        }
+        stage("Sonarqube Analysis") {
+            steps {
+                withSonarQubeEnv('mysonar') {
+                    sh ''' 
+                        $SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.projectName=zomato \
+                        -Dsonar.projectKey=zomato
+                    '''
+                }
+            }
+        }
+        stage ("Quality Gates") {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'Sonar-token'
+                }
+            }
+        }
+        stage ("Install dependencies") {
+            steps {
+                sh 'npm install'
+            }
+        }
+    }
+}
+
+
+Install OWASP dependecy in Jenkins
+
+OWASp check
+
+Now integrate in global tools
+
+Name:Dp-Check
+
+Install automatically
+
+Version
+ dependency-check 6.5.1
+
+Now integrate in pipeline
+
+Go to pipeline
+
+pipeline syntax
+
+Sample Step
+[dependencyCheckPublishe------results]
+
+XML Report Pattern
+
+**/dependency-check-reports.xml
+
+pipeline {
+    agent any
+    tools {
+        jdk 'jdk'
+        nodejs 'nodejs'
+    }
+    environment {
+        SCANNER_HOME = tool 'mysonar'
+    }
+    stages {
+        stage("Clean") {
+            steps {
+                cleanWs()
+            }
+        }
+        stage("Code") {
+            steps {
+                git branch: 'main', url: 'https://github.com/sashank216/Zomato-Repo.git'
+            }
+        }
+        stage("Sonarqube Analysis") {
+            steps {
+                withSonarQubeEnv('mysonar') {
+                    sh ''' 
+                        $SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.projectName=zomato \
+                        -Dsonar.projectKey=zomato
+                    '''
+                }
+            }
+        }
+        stage ("Quality Gates") {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'Sonar-token'
+                }
+            }
+        }
+        stage ("Install dependencies") {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage ('OWASP') {
+            steps {
+                dependencyCheck additionalArguments: '--scan ./ --disableNodeAudit', odcInstallation: 'Dp-check'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+    }
+}

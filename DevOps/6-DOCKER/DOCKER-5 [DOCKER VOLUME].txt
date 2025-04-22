@@ -1,0 +1,261 @@
+DOCKER VOLUME
+
+CONTAINER 1:                      CONTAINER 2:
+
+APP        ---->  IMAGE  ---->       APP
+
+
+
+TO REPLICATE THE DATA WE USE DOCKER VOLUME
+
+DOCKER VOLUME: USED TO STORE THE DATA IN THE CONTAINER AND TO REPLICATE THE DATA IN ANOTHER CONTAINER
+
+ex: updates in one container to replicate same data in another container we use the docker volume
+
+
+DOCKER VOLUMES:
+
+. WHEN WE CREATE CONTAINER THE VOLUME WILL BE CREATED.
+
+. VOLUME IS SIMPLY A DIRECTORY INSIDE OUR CONTAINER
+
+. FIRST, WE HAVE TO DECLARE THE DIRECTORY VOLUME AND THEN SHARE VOLUME.
+
+. EVEN IF WE STOP/DELETE THE CONTAINER STILL WE CAN ACCESS THE VOLUME.
+
+. YOU CAN DECLRAE DIRECTORY AS A VOLUME ONLY WHILE CREATING CONTAINER.
+
+. WE CAN'T CREATE VOLUME FROM EXISTING CONTAINER.
+
+. YOU CAN SHARE ONE VOLUME ACROSS MANY NUMBER OF CONTAINERS.
+
+. VOLUME WILL NOT BE INCLUDED WHEN YOU UPDATE AN IMAGE.
+
+. IF CONT-1 VOLUME IS SHARED TO CONT-2 THE CHANGES MADE BY CONTAINER-2 WILL ALSO BE AVAILABLE IN THE CONT-1
+
+. YOU CAN MAP VOLUME IN TWO WAYS:
+
+1. CONTAINER <-----> CONTAINER
+2. HOST <----> CONTAINER
+
+
+VOLUME WILL NOT BE INCLUDED WHEN YOU UPDATE AN IMAGE
+
+CONT-1                            CONT-2
+
+VOLUME[5 FILES]    ---> IMAGE ---> EMPTY VOLUME [ 0 FILES ]
+
+|                                           |
+|                                           |
+ 
+CONTAINER FILES[10 FILES]           CONTAINER FILES[10 FILES]
+
+
+DOCKER VOLUME:
+
+.docker run -it --name cont-1 -v /cloud-volume ubuntu
+
+.ll
+
+.cd cloud-volume
+
+.touch aws azure gcp
+
+folder and volume look alike
+
+difference we cannot delete the volume but folder can be deleted
+
+volume's data can be shared to another container
+
+folder's data cannot be shared to another container
+
+ctrl +p +q
+
+.docker run -it --name cont-2 --privileged=true --volumes-from cont-1 ubuntu [ to share the volume to another container]
+
+getting inside container[]:
+
+.cd cloud-volume
+
+.apt update -y[ no packages will be installed in ubuntu without this]
+
+.apt install vim -y
+
+.vim aws
+
+Hi this is new volume
+
+.docker attach cont-1
+
+.cat aws
+
+.rm -rf azure gcp
+
+ctrl +p +q
+
+.docker attach cont-2
+
+
+.docker ps
+
+.docker attach cont-2
+
+.touch file{1..3}
+
+ctrl +p +q
+
+.touch file{1..10}
+
+
+. docker commit cont-2 image1
+
+. docker images
+
+. docker run --it --name cont-3 image1
+
+. cd cloud-volume
+
+[ no data]
+
+. docker volume ls
+
+. docker volume inspect .......
+
+. docker default path [ /var/lib/docker]
+
+. docker stop cont-1 cont-2
+
+. docker container prune
+
+. cd /var/lib/docker
+
+. cd volumes/
+
+. cd .........................
+
+. ll
+
+. cd _data/
+
+Even though containers are deleted the data in volume will be present
+
+Cannot create volume for exisiting containers
+
+Mounting: HOST TO CONTAINER
+
+. mkdir myapp [ to convert into host]
+
+. cd myapp/
+. pwd
+/root/myapp [ create as a volume]
+
+docker run -it -name cont-1 -v /root/myapp:/DevOps-Volume --privileged=true ubuntu
+
+ .touch aws azure gcp
+
+.cd myapp
+
+. vim azure
+
+Docker volume
+
+.docker attach cont-1
+
+. cat aws
+
+. docker run -it --name cont-2 -v /root/myapp:AWS-Volume --privileged=true ubuntu
+
+
+alternate command:
+
+.docker run -it --name cont-3 -v $(pwd):/AWS-Volume --privileged=true ubuntu
+
+
+.docker volume ls [list of volumes]
+
+.docker volume rm _________________ [attached container's volume cannnotbe deleted only unused volumes]
+
+. docker volume prune
+
+
+To create own volume:
+
+docker volume create aws-cloud
+
+docker volume create azure-cloud
+
+docker volume  rm aws-cloud azure-cloud
+
+docker volume inspect ___________
+
+
+Mounting: attaching existing volume to new containers
+
+
+.docker volume create paytm
+
+.cd /var/lib/docker
+
+. cd volumes/
+
+. cd paytm/
+
+. cd _data/
+
+touch paytmfiles{1..5}
+
+cd
+
+docker run -it --name cont-99 --mount source=paytm,destination=/my-volume ubuntu
+
+
+docker stop $(docker ps -a)
+
+docker container prune
+
+docker volume prune
+
+
+docker volume create zomato
+
+[to insert data in volume]
+
+cd /var/lib/docker/volumes/zomato/_data
+
+vim index.html
+
+<h1> Hi </h1>
+
+cd
+
+rm -rf myapp/
+
+docker run -itd --name zomato --mount source=zomato, destination=/usr/share/nginx/html -p 8081:80 nginx
+
+
+docker run -itd --name cont-1 -v /usr/share/nginx/html -p 8082:80 nginx
+
+docker inspect cont-1
+
+cd /var/libs/docker/volumes/volumeid/_data/
+
+
+yum install git -y
+
+git clone https:
+
+cd ..
+
+cd html/
+
+docker run -itd --name cont-2 -v $(pwd):/usr/local/apache2/htdocs/  -p 8083:80 httpd
+
+vim Dockerfile
+
+FROM ubuntu
+VOLUME ["/vishnu"]
+
+
+docker build -t image1 .
+
+docker run -it --name vishnu image1

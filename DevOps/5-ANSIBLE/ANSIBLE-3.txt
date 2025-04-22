@@ -1,0 +1,192 @@
+ANSIBLE-3
+
+VARIABLE:
+
+vim one.yml
+
+---
+- hosts: dev
+  connection: ssh
+
+
+  vars:
+    abc: git
+
+  tasks:
+   - name: install git in my slave server
+     action: yum name={{abc}} state=present
+
+
+ansible-playbook one.yml
+
+
+Without declaring the vars in every playbook we can declare in the runtime
+
+Dynamic:
+
+---
+- hosts: dev
+  connection: ssh
+
+
+  tasks:
+   - name: install git in my slave server
+     action: yum name={{abc}} state=present
+
+
+ansible-playbook one.yml --extra-vars "abc=tree"
+
+
+--------------------------------------------------------------------------------------------
+
+
+---
+- hosts: dev
+  connection: ssh
+
+  vars:
+    abc: git
+    xyz: java-1.8.0-openjdk
+
+  tasks:
+   - name: install git in my slave server
+     action: yum name={{abc}} state=present
+ 
+   - name: install java-1.8.0
+     action: yum name={{xyz}} state=present
+
+
+
+ansible-playbook one.yml
+
+
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks:
+   - name: install git in my slave server
+     action: yum name={{abc}} state=present
+ 
+   - name: install java-1.8.0
+     action: yum name={{xyz}} state=present
+
+
+
+ansible-playbook one.yml --extras-vars "abc=git xyz=java-1.8.0-openjdk"
+
+
+------------------------------------------------------------------------------------------------
+
+Only in one action:
+
+---
+- hosts: dev
+  connection: ssh
+
+  vars:
+    abc: git
+    xyz: java-1.8.0-openjdk
+
+  tasks:
+   - name: install git in my slave server
+     action: yum name="{{abc}} {{xyz}}" state=present
+
+ansible-playbook one.yml 
+
+-------------------------------------------------------------------------------------------------------
+
+Playbook different and Variables different
+
+variables:
+
+vim one.yml
+
+---
+- set_fact: abc=httpd
+- name: install httpd
+  action: yum name=httpd state=present
+
+
+vim two.yml
+
+---
+- hosts: dev
+  connection: ssh
+
+  tasks:
+    - include: one.yml
+    - name: start web server
+      service: name={{abc}} state=started
+
+ansible-playbook two.yml
+
+----------------------------------------------------------------------------------------------------------
+
+
+Action and Command
+
+vim one.yml
+
+---
+- hosts: test
+  connection: ssh
+
+  tasks:
+    - name: Installing git
+      action: yum name=git state=present
+
+    - name: Installing java-1.8.0
+      action: yum name=java-1.8.0-openjdk state=present
+
+                        or
+
+      yum: name=java-1.8.0-openjdk state=present
+
+
+    - name: install java11
+      command: amazon-linux-extras install java-openjdk11 -y (only where yum module or action module cannot be used)
+
+-----------------------------------------------------------------------------------------------
+
+loops:
+
+vim loops.yml
+
+- hosts: dev
+  connection: ssh
+
+  tasks:
+     - name: install multiple tools
+       yum: name={{item}} state=present   (item= predefined)
+
+       with_items:
+         - git
+         - maven
+         - tree
+
+anisble-playbook loops.yml
+
+----------------------------------------------------------------------------------------
+
+To add user in server:
+
+vim user.yml
+
+---
+- hosts: test
+  connection: ssh
+
+  tasks:
+   - name: adding a user
+     user: name=arjun state=present
+
+ansible-playbook user.yml
+
+
+TASK:
+PLAYBOOK TO ADD MULTIPLE USERS USING SINGLE PLAYBOOK
+
+PLAYBOOK TO ADD SINGLE GROUP IN SLAVE SERVER
+

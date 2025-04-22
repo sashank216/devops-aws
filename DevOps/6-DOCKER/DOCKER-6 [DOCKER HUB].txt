@@ -1,0 +1,203 @@
+DOCKER HUB
+
+Sharing the image
+
+
+Git --> Code             Docker ---> DockerHub
+Sharing the code               Image
+
+GitHub
+
+
+Docker Registry: It used to store the images.Docker hub is the default registry
+
+
+Cloud based registry                                 Local Registri
+.Docker Hub                                          . Nexus
+.GCR- Google Container Registry                      . JFrog
+. Amazon ECR- Elastic Container Registry             . DTR- Docer Trusted Registry
+
+
+
+
+We have to take the code from developers
+Write a docker file as per the source code
+Build the docker file then image will get created
+Push the image to docker hub
+  - Tag the image
+  - Login into docker hub from server (docker login)
+  - Push the image
+
+
+
+
+[docker push new-repo: tagname]
+
+docker images
+
+docker tag image1:latest vishnu-repo:myimage
+
+docker login
+
+docker push sashank448/vishnu-repo:myimage
+
+docker pull sashank448/vishnu-repo:myimage
+
+
+. yum install git -y
+
+. build the dockerfile image
+
+. docker build -t image1 .
+
+
+[docker tag local-image: tagname new-repo: tagname]
+
+
+
+DOCKER-PIPELINE
+
+Pipeline-script
+
+
+pipeline {
+    agent any
+    stages {
+       stage ("Code") {
+           steps {
+               git "htps_____"
+           }
+        }
+       
+     }
+}
+
+Build Now
+
+
+
+
+console: cd /var/lib/jenkins/workspace/Docker-pipeline/
+
+        
+
+pipeline {
+    agent any
+    stages {
+       stage ("Code") {
+           steps {
+               git "htps_____"
+           }
+        }
+        stage ("Build") {
+            steps {
+                sh 'docker build -t devops:one html/'
+            }
+
+        }
+     }
+}
+
+
+
+console: go to directory file
+
+         chmod 777 ///var/run/docker.sock 
+
+Build Now
+
+
+pipeline {
+    agent any
+    stages {
+       stage ("Code") {
+           steps {
+               git "htps_____"
+           }
+        }
+        stage ("Build") {
+            steps {
+                sh 'docker build -t devops:one html/'
+            }
+
+        }
+
+        stage ("Deploy") {
+           steps {
+              sh 'docker run -itd --name cont-1001 -p 8089:80 devops:one'
+
+            }
+        }
+     }
+}
+
+Build Now
+
+
+pipeline {
+    agent any
+    stages {
+       stage ("Code") {
+           steps {
+               git "htps_____"
+           }
+        }
+        stage ("Build") {
+            steps {
+                sh 'docker build -t $image:$tag html/'
+            }
+
+        }
+
+        stage ("Deploy") {
+           steps {
+              sh 'docker run -itd --name $cname -p hport:80 $image:$tag'
+
+            }
+        }
+     }
+}
+
+take string parameters to avoid job configurations
+
+
+
+Task:
+
+Push into docker hub
+
+
+Install plugin docker
+
+
+Integrate Jenkins with Docker
+
+. cd /lib/systemd/system/docker.service
+ 
+ vim docker.service
+
+. Replace the 19th line with
+
+ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:4243 -H unix:///var/run/docker.sock
+
+. systemctl daemon-relod
+.  systemctl restart docker
+. docker ps -a
+. docker start cont1001 vishnu 
+
+
+In
+
+Manage Jenkins < Clouds < New Cloud < [MyDocker] create
+
+Docker Host URI
+
+tcp://0.0.0.0.4243
+
+test connection
+
+
+Only running containers are availble in jenkins dashboard to monitor
+
+
+

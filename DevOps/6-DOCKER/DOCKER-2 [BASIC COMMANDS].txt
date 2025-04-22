@@ -1,0 +1,137 @@
+DOCKER -2
+
+POINTS TO BE FOLLOWED:
+
+. YOU CAN'T USE DOCKER DIRECTLY, YOU NEED TO START/RESTART FIRST(OBSERVER THE DOCKER VERSION BEFORE AND AFTER RESTART)
+
+. YOU NEED A BASE IMAGE FOR CREATING A CONTAINER.
+
+. YOU CAN'T ENTER DIRECTLY TO CONTAINER, YOU NEED TO START FIRST.
+
+. IF YOU RUN AN IMAGE, BY DEFAULY ONE CONTAINER WILL CREATE.
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+. sudo -i
+
+. yum install docker -y
+
+. systemctl status docker
+
+. systemctl start docker
+
+. docker version ( to know the version of the docker )
+
+. docker info ( to analyze the full information of the docker)
+
+. docker images ( Used to list of images)
+
+. docker pull ubuntu ( Used to pull the images)
+
+. docker ps -a ( list of containers) ps(processors)
+
+. docker run -it --name contname ubuntu (create the container)(-it(shell which is used to perform the commands and which is used to run the applications (interactive terminal))
+
+. ls (list of files)
+
+. exit (to get out from the container)
+
+. to again get into the container
+
+. start the docker = docker start contname
+
+. docker attach contname
+
+. Without using exit user can exist from the container without stoppinh
+ [ctrl+p+q]
+
+. docker ps -a
+
+[User can observe now that the container is still in upstate]
+
+ex:
+
+docker run -it --name cont-1 ubuntu
+
+ctrl+p+q
+
+docker ps -a
+
+
+To observe only running containers:
+
+docker ps
+
+
+To stop the container:
+
+docker stop contid
+
+
+To observe only stopped containers:
+
+docker ps -f "status=exited"  (-f = filter)
+
+
+To delete the container:
+
+docker rm contid ( running containers cannot be deleted, to delete the co ntainer stop the container and delete the container)
+
+ex:
+
+docker run -it --name cont-2 ubuntu
+
+docker run -it --name cont-3 ubuntu
+
+docker run -it --name cont-4 ubuntu
+
+docker run -it --name cont-5 ubuntu
+
+]docker stop cont-2 cont-3 cont-4
+
+] docker stop $(docker ps) ( to stop all the containers)
+
+] docker start cont-2 cont-3 cont-4
+
+] docker start $(docker ps -a) ( to start all the containers)
+
+] docker ps -a
+
+To rename the containers:
+ex:
+
+docker rename cont-1 cont-1111
+
+docker rename cont-2 cont-2222
+
+
+To immediately stop the container:
+
+docker kill contname
+
+KILL -> DOCKER CLIENT PASSES  SSIGKILL SIGNAL TO DAEAMON
+
+STOP -> DOCKER CLIENT PASSES  SIGTERM SIGNAL TO DAEAMON
+
+
+ALTERNATIVE COMMANDS:
+
+docker container ls -a (list of containers)
+
+docker container ls (list of runnig containers)
+
+docker ps -n 2 (top 2 latest containers)
+
+docker container ls -a -n 2 (top 2 latest containers)
+
+docker container ls --latest
+
+
+Remove all the exited containers:
+
+docker container rm $(docker ls -a) (to remove the all exited contaners)
+
+
+To know the size of container:
+
+docker container ls -s
