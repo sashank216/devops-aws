@@ -19,7 +19,7 @@ Community         Good Community         Greater Community for users documentati
 GUI                NO GUI                  GUI
 
 
-Kubenetes:
+Kuberrnetes:
 
 It is an open source container orchestration platform.
 
@@ -102,9 +102,166 @@ create pods                               5. Update the pod data     [ETCD CLUST
 1. Request        |          --| ---------4. Creates a pod in worker node--------------------------->
                   | 2. Request |   
                   |--          | 
-                    
+                    |       |
                      SCHEDULER  -----------3. Find the perfect node to create-----------------------------> Kubelet
                                 <----------------------------------------  
 
 
-------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Cluster:
+
+. It is a group of servers it will have both manager and worker nodes
+
+. Master node is used to assign tasks to worker nodes
+
+. Worker node will perform the task
+
+. We have 4 components in Master Node
+
+
+1. API Server
+2. ETCD
+3. Controllers-manager
+4. Schedulers
+
+   we have 4 components in worker node
+
+ 1. Kubelet
+ 2. Kube-proxy
+ 3. Pod
+ 4. Container
+
+
+
+
+There will be Scheduler in the Manager
+
+CLUSTER:
+
+In worker node-1 There is kubelet
+
+In worker node-2 There is kubelet
+
+A request is passed to create a pod - it reaches schdulet
+
+There are 2 servers in the cluster so scheduler decides in which worker  node pod will be created 
+
+There will be communication between kubelet worker nodes and scheduler
+
+It(Scheduler) verifies n no of pods in different worker nodes and it comes to the conclusion based the pods in the worker node if worker node -1 has 5 pods and worker node-2 has 6 pods as worker node has less pods compare to workder node 2 the new pod will be created in node-1 as suggested by scheduler to apo server, the pod created information will be stored etcd cluster [it updates into it][it updates automatically]
+ 
+
+Controller Manager works on based on API server request [ex: pod creates when one pod deletd, ip addr of pod is created or not, if worker node is dleted  another new worker node is replaced with it]
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+->API Server:
+
+. It is used to accept the request from the user and store the request in ETCD
+. It is the only component that interacts with the ETCD directly
+. The only component which communicates with etcd
+
+->ETCD:
+
+. It is like a database to our k8's
+. It is used to store the requests of our cluster like pods, nodes, confogs, secrets, roles etc.
+
+->Scheduler:
+
+. It is used to search pending tasks which are present in ETCD.
+
+. If any pending task found in ETCD, it will schedule in worker node
+
+. It will decide in which worker node our task should gets executed
+
+. It will decide by communication with the kubelet in worker node
+
+. Scheduler always monitor API-Server
+
+. The scheduler is a crucial component responsible for assigning pods to nodes
+
+. This will ensure that pods are scheduled on suitable nodes that meet their resource requirements and constraints
+
+-> Scheduler will do the following tasks
+   a. Pod Creation
+   b. Pod Scheduling
+   c. Selecting Node
+   d. Pod Running
+   e. Kubelet Action
+
+Controllers:
+
+The controller Manager collects the data/information from API Server of the Kubernetes cluster like the desired state of the cluster and then decides what to do by sending the instruction to the API Server
+
+   . Controller will do the following tasks
+
+     a. Replication controller
+     b. Node Controller
+     c. Service Controller
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Worker Node Components:
+
+Kubelet:
+
+. Kubelet is the primary component of the Worker Node which manages the Pods and regularly checks whethere the pod is running or not
+
+. If pods are not working properly, then kubelet creates a new pod and replaces it with the previous one because the failed pod can't be restarted hence, the IP of the pod might be changed 
+
+Kube-proxy:
+
+. Kube-proxy contains all the network configuration of the entire cluster such as pod ID, Services, Deployments etc
+
+. It takes care of the load balancing and routing which comes under networking configuration
+
+
+Pod: A group of one or more containers
+
+Container:
+ 
+   . It is a virtual machine which does not have any OS
+   . It is used to run the applications in worker nodes
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+K8s CLuster Setup
+
+There are multiple ways to setup k8s cluster
+
+1. Self Manager k8's cluster
+  
+  a. mini kube( Single node cluster)
+  b. kubeadm(multi node cluster)
+  c. KOPS
+
+2. Cloud Managed k8s cluster
+  
+  a. AWS EKS
+  b. AZURE EKS
+  c. GCP EKS
+  d. IBM IKE
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+MINIKUBE:[not real time]
+
+.It is a tool used to setup single node cluster on k8's
+
+.It contains API servers, ETDC database and container runtime
+
+. It helps you to containerized applications
+
+. It is used for development, testing, and experimentaion purposes on local
+
+. Here master and worker runs on same machine
+
+. It is a platform independent
+
+. By default it will create one node only
+
+. Installing Minikube is simple compared to other tools
+
+
+
